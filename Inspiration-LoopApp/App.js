@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Image } from "react-native-web";
+import { Image } from "react-native";
 
 import HomeScreen from "./screens/Inicio";
 import CrearScreen from "./screens/Crear";
@@ -19,10 +19,10 @@ export default function App() {
                     tabBarStyle: {
                         position: "absolute",
 
-                        bottom: 10,
+                        bottom: 50,
                         left: 10,
                         right: 10,
-                        height: 52,
+                        height: 50,
 
                         borderRadius: 20,
 
