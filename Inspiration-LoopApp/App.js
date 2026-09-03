@@ -26,7 +26,7 @@ export default function App() {
 
                         borderRadius: 20,
 
-                        backgroundColor: "#ffffff",
+                        backgroundColor: "#969aa8",
 
                         //borderTopWidth: 0,
 
