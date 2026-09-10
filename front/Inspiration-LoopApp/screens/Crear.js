@@ -15,20 +15,11 @@ export default function CrearScreen() {
             />
 
             <Text style={{ fontSize: 25, marginLeft: '5%', marginTop: '2%', marginBottom: '1%' }}>Categoria</Text>
-            <TouchableOpacity 
-                style={{ backgroundColor: '#FFF', borderWidth: 1, marginLeft: '5%', width: 45, height: 45, borderRadius: 10, alignItems: 'center', justifyContent: 'center' }}
-                onPress={() => {}}
-            >
-                <Text style={{ fontSize: 24, fontWeight: 'bold' }}>+</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity 
-                style={{ backgroundColor: '#737373', marginTop: -38, marginLeft: '32%', marginRight: '20%', borderRadius: 5, alignItems: 'center', justifyContent: 'center', height: 35 }}
-                onPress={() => {}}
-            >
-                <Text style={{ color: '#FFF', fontSize: 16 }}>Agregar Categoría</Text>
-            </TouchableOpacity>
-
+            <TextInput 
+                style={{ fontSize: 15, backgroundColor: '#ffff', borderWidth: 1, marginLeft: '5%', color: '#000000', width: '60%', height: '5%', borderRadius: 5, paddingHorizontal: 10 }} 
+                placeholder="ingrese la categoria..." 
+            />
+            
             <Text style={{ fontSize: 25, marginLeft: '5%', marginTop: '2%', marginBottom: '1%' }}>Descripción</Text>
             <TextInput 
                 style={{ fontSize: 15, backgroundColor: '#ffff', borderWidth: 1, marginLeft: '5%', color: '#000000', width: '85%', height: '18%', borderRadius: 5, padding: 10, textAlignVertical: 'top' }} 
