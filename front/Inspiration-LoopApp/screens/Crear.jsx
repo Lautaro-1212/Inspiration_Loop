@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, Image, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 export default function CrearScreen() {
-    const [imagen, setImagen] = useState(null); // Estado para la URI de la imagen
+    const [imagen, setImagen] = useState(null);
     const [nombre, setNombre] = useState('');
     const [categoriaActual, setCategoriaActual] = useState('');
     const [categorias, setCategorias] = useState([]);
     const [descripcion, setDescripcion] = useState('');
 
-    // Abrir Galería
     const abrirGaleria = async () => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
@@ -29,7 +28,6 @@ export default function CrearScreen() {
         }
     };
 
-    // Abrir Cámara
     const tomarFoto = async () => {
         const { status } = await ImagePicker.requestCameraPermissionsAsync();
         if (status !== 'granted') {
@@ -59,13 +57,33 @@ export default function CrearScreen() {
         setCategorias(categorias.filter((_, index) => index !== indexAEliminar));
     };
 
+    const guardarPublicacion = () => {
+        if (!imagen) {
+            Alert.alert('Campo incompleto', 'No se seleccionó una imagen.');
+            return;
+        }
+        if (nombre.trim() === '') {
+            Alert.alert('Campo incompleto', 'Campo de nombre vacío.');
+            return;
+        }
+        if (categorias.length === 0) {
+            Alert.alert('No ingresó ninguna categoría aún', 'Por favor ingrese una categoría.');
+            return;
+        }
+        if (descripcion.trim() === '') {
+            Alert.alert('No hay ninguna descripción', 'Ingrese una descripción.');
+            return;
+        }
+
+        Alert.alert('¡Éxito!', 'Felicidades su publicación se ha guardado correctamente.');        
+    };
+
     return (
-        <View style={{ width: '100%', height: '100%', backgroundColor: '#969aa8' }}>
+        <ScrollView style={{ flex: 1, backgroundColor: '#969aa8' }} contentContainerStyle={{ paddingBottom: 150 }}>
             
             <Text style={{ fontSize: 25, marginLeft: '5%', marginTop: '10%', marginBottom: '1%' }}>Imagen:</Text>
             
-            {/* Espacio para la imagen elegida */}
-            <View style={{ backgroundColor: '#FFF', height: '18%', width: '38%', marginLeft: '5%', borderRadius: 15, borderWidth: 1, borderColor: '#000', overflow: 'hidden', justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ backgroundColor: '#FFF', height: 140, width: '38%', marginLeft: '5%', borderRadius: 15, borderWidth: 1, borderColor: '#000', overflow: 'hidden', justifyContent: 'center', alignItems: 'center' }}>
                 {imagen ? (
                     <Image source={{ uri: imagen }} style={{ width: '100%', height: '100%' }} />
                 ) : (
@@ -75,7 +93,7 @@ export default function CrearScreen() {
 
             <Text style={{ fontSize: 25, marginLeft: '5%', marginTop: '2%', marginBottom: '1%' }}>Nombre</Text>
             <TextInput 
-                style={{ fontSize: 15, backgroundColor: '#ffff', borderWidth: 1, marginLeft: '5%', color: '#000000', width: '60%', height: '5%', borderRadius: 5, paddingHorizontal: 10 }} 
+                style={{ fontSize: 15, backgroundColor: '#ffff', borderWidth: 1, marginLeft: '5%', color: '#000000', width: '60%', height: 40, borderRadius: 5, paddingHorizontal: 10 }} 
                 placeholder="nombre de la imagen..." 
                 value={nombre}
                 onChangeText={setNombre}
@@ -83,7 +101,7 @@ export default function CrearScreen() {
 
             <Text style={{ fontSize: 25, marginLeft: '5%', marginTop: '2%', marginBottom: '1%' }}>Categoria</Text>
             <TextInput 
-                style={{ fontSize: 15, backgroundColor: '#ffff', borderWidth: 1, marginLeft: '5%', color: '#000000', width: '60%', height: '5%', borderRadius: 5, paddingHorizontal: 10 }} 
+                style={{ fontSize: 15, backgroundColor: '#ffff', borderWidth: 1, marginLeft: '5%', color: '#000000', width: '60%', height: 40, borderRadius: 5, paddingHorizontal: 10 }} 
                 placeholder="ingrese la categoria..." 
                 value={categoriaActual}
                 onChangeText={setCategoriaActual}
@@ -106,24 +124,41 @@ export default function CrearScreen() {
             
             <Text style={{ fontSize: 25, marginLeft: '5%', marginTop: '2%', marginBottom: '1%' }}>Descripción</Text>
             <TextInput 
-                style={{ fontSize: 15, backgroundColor: '#ffff', borderWidth: 1, marginLeft: '5%', color: '#000000', width: '55%', height: '10%', borderRadius: 5, padding: 10, textAlignVertical: 'top' }} 
+                style={{ fontSize: 15, backgroundColor: '#ffff', borderWidth: 1, marginLeft: '5%', color: '#000000', width: '85%', height: 100, borderRadius: 5, padding: 10, textAlignVertical: 'top' }} 
                 placeholder="escriba una descripcion"
                 multiline={true}
                 value={descripcion}
                 onChangeText={setDescripcion}
             />
 
-            {/* Barra de Cámara y Galería */}
+            <TouchableOpacity 
+                onPress={guardarPublicacion}
+                style={{
+                    backgroundColor: '#28a745',
+                    marginHorizontal: '5%',
+                    marginTop: 25,
+                    height: 50,
+                    borderRadius: 10,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderWidth: 1,
+                    borderColor: '#1e7e34'
+                }}
+            >
+                <Text style={{ color: '#FFF', fontSize: 18, fontWeight: 'bold' }}>Guardar</Text>
+            </TouchableOpacity>
+
             <View style={{
-                position: 'absolute',
-                bottom: 110, 
-                left: '5%',
-                right: '5%',
-                height: '8%',
+                marginTop: 15,
+                marginHorizontal: '5%',
+                height: 60,
                 backgroundColor: '#737785',
                 borderRadius: 12,
                 flexDirection: 'row',
                 alignItems: 'center',
+                marginLeft: '5%',
+                marginRight: '5%',
+
                 justifyContent: 'space-around',
                 borderWidth: 1,
                 borderColor: '#4a4d56'
@@ -141,6 +176,6 @@ export default function CrearScreen() {
                 </TouchableOpacity>
             </View>
 
-        </View>
+        </ScrollView>
     );
 }
