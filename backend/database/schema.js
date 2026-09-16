@@ -1,6 +1,6 @@
 import db from  '../config/database.js'
 
-export function arrancarBDD(){
+export function startBDD(){
     db.exec(`
         CREATE TABLE IF NOT EXISTS image(
             id INTEGER PRIMARY KEY,
@@ -30,5 +30,5 @@ export function arrancarBDD(){
         );
     `)
 
-    console.log("Se creo correctamente la BDD");
+    console.log("The database was created successfully.");
 }

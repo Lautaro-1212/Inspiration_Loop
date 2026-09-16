@@ -1,6 +1,7 @@
-import { arrancarBDD } from './database/schema.js';
+import { startBDD } from './database/schema.js';
 import express from 'express'
 import imageRouter from "./controller/imageController.js"
+import { ensureUploadDir } from "./config/fileStorage.js"
 
 const app = express();
 const PORT = 3000;
@@ -9,19 +10,20 @@ app.use(express.json());
 
 app.use("/api/images", imageRouter)
 
-function arracarHTTP(){
+function startHTTP(){
     app.listen(PORT, () => {
-        console.log(`Servidor funcionando en http://localhost:${PORT}`);
+        console.log(`Server start in http://localhost:${PORT}`);
     });
 }
 
-function arrancarServicios(){
+function startServices(){
     try{
-        arrancarBDD()
-        arracarHTTP()
+        startBDD();
+        ensureUploadDir();
+        startHTTP();
     } catch(error){
         console.log("Error: ", error)
     }
 }
 
-arrancarServicios();
+startServices();
