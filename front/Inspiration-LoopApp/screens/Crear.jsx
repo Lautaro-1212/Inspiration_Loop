@@ -1,15 +1,30 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Image, TouchableOpacity, Alert, Modal } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 export default function CrearScreen() {
-    const [imagen, setImagen] = useState(null); // Estado para la URI de la imagen
+    const [imagen, setImagen] = useState(null);
     const [nombre, setNombre] = useState('');
     const [categoriaActual, setCategoriaActual] = useState('');
     const [categorias, setCategorias] = useState([]);
     const [descripcion, setDescripcion] = useState('');
+    const [modalVisible, setModalVisible] = useState(false);
+    const [dimensiones, setDimensiones] = useState({ width: 0, height: 0 });
 
-    // Abrir Galería
+    useEffect(() => {
+        if (imagen) {
+            Image.getSize(
+                imagen,
+                (width, height) => {
+                    setDimensiones({ width, height });
+                },
+                (error) => {
+                    console.error('Error al obtener el tamaño:', error);
+                }
+            );
+        }
+    }, [imagen]);
+
     const abrirGaleria = async () => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
@@ -19,8 +34,7 @@ export default function CrearScreen() {
 
         const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [1, 1],
+            allowsEditing: false,
             quality: 0.8,
         });
 
@@ -29,7 +43,6 @@ export default function CrearScreen() {
         }
     };
 
-    // Abrir Cámara
     const tomarFoto = async () => {
         const { status } = await ImagePicker.requestCameraPermissionsAsync();
         if (status !== 'granted') {
@@ -38,8 +51,7 @@ export default function CrearScreen() {
         }
 
         const result = await ImagePicker.launchCameraAsync({
-            allowsEditing: true,
-            aspect: [1, 1],
+            allowsEditing: false,
             quality: 0.8,
         });
 
@@ -59,19 +71,101 @@ export default function CrearScreen() {
         setCategorias(categorias.filter((_, index) => index !== indexAEliminar));
     };
 
+    // FUNCIÓN DE GUARDAR CON VALIDACIONES ESTRICTAS
+    const guardarRegistro = () => {
+        if (!imagen) {
+            Alert.alert('Falta la imagen', 'Debes seleccionar o tomar una foto antes de guardar.');
+            return;
+        }
+
+        if (!nombre.trim()) {
+            Alert.alert('Falta el nombre', 'Por favor escribe un nombre para la imagen.');
+            return;
+        }
+
+        if (categorias.length === 0) {
+            Alert.alert('Falta la categoría', 'Debes agregar al menos una categoría a la lista.');
+            return;
+        }
+
+        if (!descripcion.trim()) {
+            Alert.alert('Falta la descripción', 'Por favor escribe una descripción.');
+            return;
+        }
+
+        // Si llegó hasta acá significa que completó absolutamente todo
+        Alert.alert('¡Éxito!', 'Todos los datos están correctos y se han guardado.');
+        
+        // Aquí puedes limpiar el formulario o hacer tu lógica de guardado
+    };
+
     return (
         <View style={{ width: '100%', height: '100%', backgroundColor: '#969aa8' }}>
             
             <Text style={{ fontSize: 25, marginLeft: '5%', marginTop: '10%', marginBottom: '1%' }}>Imagen:</Text>
             
             {/* Espacio para la imagen elegida */}
-            <View style={{ backgroundColor: '#FFF', height: '18%', width: '38%', marginLeft: '5%', borderRadius: 15, borderWidth: 1, borderColor: '#000', overflow: 'hidden', justifyContent: 'center', alignItems: 'center' }}>
+            <TouchableOpacity 
+                onPress={() => {
+                    if (imagen) setModalVisible(true);
+                }}
+                activeOpacity={imagen ? 0.7 : 1}
+                style={{ 
+                    backgroundColor: '#FFF', 
+                    height: '18%', 
+                    width: '38%', 
+                    marginLeft: '5%', 
+                    borderRadius: 15, 
+                    borderWidth: 1, 
+                    borderColor: '#000', 
+                    overflow: 'hidden', 
+                    justifyContent: 'center', 
+                    alignItems: 'center' 
+                }}
+            >
                 {imagen ? (
                     <Image source={{ uri: imagen }} style={{ width: '100%', height: '100%' }} />
                 ) : (
                     <Text style={{ color: '#aaa', textAlign: 'center' }}>Sin imagen</Text>
                 )}
-            </View>
+            </TouchableOpacity>
+
+            {/* Modal para ver la imagen ampliada */}
+            <Modal
+                visible={modalVisible}
+                transparent={true}
+                animationType="fade"
+                onRequestClose={() => setModalVisible(false)}
+            >
+                <View style={{
+                    flex: 1,
+                    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <TouchableOpacity 
+                        onPress={() => setModalVisible(false)}
+                        style={{
+                            position: 'absolute',
+                            top: 20,
+                            right: 30,
+                            zIndex: 1,
+                            padding: 10,
+                            backgroundColor: 'rgba(255,255,255,0.3)',
+                            borderRadius: 20
+                        }}
+                    >
+                        <Text style={{ color: '#FFF', fontWeight: 'bold', fontSize: 18 }}> ✕ Cerrar </Text>
+                    </TouchableOpacity>
+
+                    {imagen && (
+                        <Image 
+                            source={{ uri: imagen }} 
+                            style={{ width: '90%', height: '80%', resizeMode: 'contain' }} 
+                        />
+                    )}
+                </View>
+            </Modal>
 
             <Text style={{ fontSize: 25, marginLeft: '5%', marginTop: '2%', marginBottom: '1%' }}>Nombre</Text>
             <TextInput 
@@ -106,7 +200,7 @@ export default function CrearScreen() {
             
             <Text style={{ fontSize: 25, marginLeft: '5%', marginTop: '2%', marginBottom: '1%' }}>Descripción</Text>
             <TextInput 
-                style={{ fontSize: 15, backgroundColor: '#ffff', borderWidth: 1, marginLeft: '5%', color: '#000000', width: '55%', height: '10%', borderRadius: 5, padding: 10, textAlignVertical: 'top' }} 
+                style={{ fontSize: 15, backgroundColor: '#ffff', borderWidth: 1, marginLeft: '5%', color: '#000000', width: '75%', height: '8%',marginBottom: '20%' , borderRadius: 5, padding: 10, textAlignVertical: 'top' }} 
                 placeholder="escriba una descripcion"
                 multiline={true}
                 value={descripcion}
@@ -140,6 +234,27 @@ export default function CrearScreen() {
                     <Text style={{ fontWeight: 'bold', color: '#000', fontSize: 13, marginTop: 2 }}>Galeria</Text>
                 </TouchableOpacity>
             </View>
+
+            {/* Botón Guardar */}
+            <TouchableOpacity 
+                onPress={guardarRegistro}
+                style={{
+                    position: 'absolute',
+                    bottom: 30,
+                    left: '5%',
+                    right: '5%',
+                    backgroundColor: '#28a745',
+                    height: '7%',
+                    borderRadius: 12,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderWidth: 1,
+                    borderColor: '#1e7e34',
+                    marginBottom: 160,
+                }}
+            >
+                <Text style={{ color: '#FFF', fontSize: 18, fontWeight: 'bold' }}>Guardar</Text>
+            </TouchableOpacity>
 
         </View>
     );
