@@ -93,10 +93,22 @@ export default function CrearScreen() {
             return;
         }
 
-        // Si llegó hasta acá significa que completó absolutamente todo
-        Alert.alert('¡Éxito!', 'Todos los datos están correctos y se han guardado.');
-        
-        // Aquí puedes limpiar el formulario o hacer tu lógica de guardado
+        Alert.alert(
+            '¡Éxito!', 
+            'Todos los datos están correctos y se han guardado.',
+            [
+                {
+                    text: 'OK',
+                    onPress: () => {
+                        setImagen(null);
+                        setNombre('');
+                        setCategoriaActual('');
+                        setCategorias([]);
+                        setDescripcion('');
+                    }
+                }
+            ]
+        )
     };
 
     return (
@@ -104,7 +116,6 @@ export default function CrearScreen() {
             
             <Text style={{ fontSize: 25, marginLeft: '5%', marginTop: '10%', marginBottom: '1%' }}>Imagen:</Text>
             
-            {/* Espacio para la imagen elegida */}
             <TouchableOpacity 
                 onPress={() => {
                     if (imagen) setModalVisible(true);
@@ -130,7 +141,6 @@ export default function CrearScreen() {
                 )}
             </TouchableOpacity>
 
-            {/* Modal para ver la imagen ampliada */}
             <Modal
                 visible={modalVisible}
                 transparent={true}
@@ -207,7 +217,6 @@ export default function CrearScreen() {
                 onChangeText={setDescripcion}
             />
 
-            {/* Barra de Cámara y Galería */}
             <View style={{
                 position: 'absolute',
                 bottom: 110, 
@@ -235,7 +244,6 @@ export default function CrearScreen() {
                 </TouchableOpacity>
             </View>
 
-            {/* Botón Guardar */}
             <TouchableOpacity 
                 onPress={guardarRegistro}
                 style={{
