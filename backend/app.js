@@ -1,7 +1,6 @@
 import { startBDD } from './database/schema.js';
 import express from 'express'
 import imageRouter from "./controller/imageController.js"
-import { ensureUploadDir } from "./config/fileStorage.js"
 
 const app = express();
 const PORT = 3000;
@@ -19,7 +18,6 @@ function startHTTP(){
 function startServices(){
     try{
         startBDD();
-        ensureUploadDir();
         startHTTP();
     } catch(error){
         console.log("Error: ", error)
