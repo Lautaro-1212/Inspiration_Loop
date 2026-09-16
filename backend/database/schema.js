@@ -6,7 +6,7 @@ export function arrancarBDD(){
             id INTEGER PRIMARY KEY,
             name TEXT NOT NULL,
             path TEXT NOT NULL,
-            with INTEGER, 
+            width INTEGER, 
             height INTEGER 
         );
 
