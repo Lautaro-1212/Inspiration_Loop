@@ -23,20 +23,42 @@ export function findById(id){
     return resultado;
 }
 
-export function create(image){
-    const resultado = db.prepare(`
-        INSERT INTO image (name, path, width, height)
-        VALUES (?, ?, ?, ?)
-    `).run(
-        image.name,
-        image.path,
-        image.width,
-        image.height
-    );
+export function create(image, categoryIds = []) {
+    const createTransaction = db.transaction((imageData, categories) => {
+        // 1. Insertar la imagen
+        const result = db.prepare(`
+            INSERT INTO image (name, path, width, height)
+            VALUES (?, ?, ?, ?)
+        `).run(
+            imageData.name,
+            imageData.path,
+            imageData.width,
+            imageData.height
+        );
 
-    console.log("La imagen se creo correctamente")
+        const imageId = result.lastInsertRowid;
 
-    return resultado;
+        // 2. Insertar solo categorías válidas
+        if (categories && categories.length > 0) {
+            const checkCategory = db.prepare(`SELECT id FROM category WHERE id = ?`);
+            const insertCategory = db.prepare(`
+                INSERT INTO image_category (image_id, category_id)
+                VALUES (?, ?)
+            `);
+
+            for (const categoryId of categories) {
+                // Verificamos si existe antes de insertar en image_category
+                const categoryExists = checkCategory.get(categoryId);
+                if (categoryExists) {
+                    insertCategory.run(imageId, categoryId);
+                }
+            }
+        }
+
+        return { imageId, changes: result.changes };
+    });
+
+    return createTransaction(image, categoryIds);
 }
 
 export function deleteById(id){
