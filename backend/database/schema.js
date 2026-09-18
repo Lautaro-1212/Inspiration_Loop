@@ -7,7 +7,8 @@ export function startBDD(){
             name TEXT NOT NULL,
             path TEXT NOT NULL,
             width INTEGER, 
-            height INTEGER 
+            height INTEGER,
+            description TEXT NOT NULL
         );
 
         CREATE TABLE IF NOT EXISTS category(

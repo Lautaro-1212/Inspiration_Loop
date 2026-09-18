@@ -12,6 +12,11 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+  "expo": {
+    "androidNavigationBar": {
+      "backgroundColor": "#00000000"
+    }
+  },
     "ios": {
       "supportsTablet": true
     },

@@ -27,13 +27,14 @@ export function create(image, categoryIds = []) {
     const createTransaction = db.transaction((imageData, categories) => {
         // 1. Insertar la imagen
         const result = db.prepare(`
-            INSERT INTO image (name, path, width, height)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO image (name, path, width, height, description)
+            VALUES (?, ?, ?, ?, ?)
         `).run(
             imageData.name,
             imageData.path,
             imageData.width,
-            imageData.height
+            imageData.height,
+            imageData.description
         );
 
         const imageId = result.lastInsertRowid;

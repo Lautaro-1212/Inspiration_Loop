@@ -15,21 +15,18 @@ export function postImage(bodyData, fileData) {
     const dimensions = imageSize(buffer);
 
     const imageData = {
-        name: bodyData.name || fileData.originalname,
-        path: fileData.path,
-        width: dimensions.width,
-        height: dimensions.height
-    };
+    name: bodyData.name || fileData.originalname,
+    path: fileData.path,
+    width: dimensions.width,
+    height: dimensions.height,
+    description: bodyData.description
+};
 
     // Parsear las categorías enviadas desde req.body
     let categoryIds = [];
+
     if (bodyData.categories) {
-        // Si mandas un string separado por comas o un solo valor desde el cliente
-        if (typeof bodyData.categories === "string") {
-            categoryIds = bodyData.categories.split(",").map(id => Number(id.trim()));
-        } else if (Array.isArray(bodyData.categories)) {
-            categoryIds = bodyData.categories.map(Number);
-        }
+        categoryIds = JSON.parse(bodyData.categories);
     }
 
     return create(imageData, categoryIds);

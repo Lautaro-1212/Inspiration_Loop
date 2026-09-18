@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Image } from "react-native";
+import { Image, StatusBar } from "react-native";
+
 
 import HomeScreen from "./screens/Inicio";
 import CrearScreen from "./screens/Crear";
@@ -8,54 +9,52 @@ import PerfilScreen from "./screens/Perfil";
 import BuscarScreen from "./screens/Buscar";
 
 const Tab = createBottomTabNavigator();
-
+        
 export default function App() {
-    return (
-        <NavigationContainer>
-            <Tab.Navigator
-                screenOptions={{
-                    headerShown: false,
+  return (
+    <>
+      {/* Transparencia total en la barra superior del sistema */}
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        barStyle="light-content"
+      />
 
-                    tabBarStyle: {
-                        position: "absolute",
+      <NavigationContainer>
+        <Tab.Navigator
+          screenOptions={{
+            headerShown: false,
+            tabBarShowLabel: false,
 
-                        bottom: 50,
-                        left: 10,
-                        right: 10,
-                        height: 50,
-
-                        borderRadius: 20,
-
-                        backgroundColor: "#969aa8",
-
-                        //borderTopWidth: 0,
-
-                        borderWidth: 2,
-                        borderColor:'black',
-
-                        elevation: 5,
-                    },
-
-                    tabBarItemStyle: {
-                        paddingVertical: 0,
-                    },
-                }}
-            >
-                <Tab.Screen
-                    name="Inicio"
-                    component={HomeScreen}
-                    options={{
-                        tabBarIcon: () => (
-                            <Image
-                                source={require("./assets/Home.png")}
-                                style={{
-                                width: 30,
-                                height: 30,
-                                }}
-                            />
-                        )
-                    }}
+            tabBarStyle: {
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: 75,
+              backgroundColor: "#224484", // Mismo fondo gris de tus pantallas
+              borderTopWidth: 0,
+              elevation: 0, // Quita la línea superior y sombra en Android
+              paddingBottom: 15, // Eleva los íconos por encima de los botones de Android
+            },
+            tabBarItemStyle: {
+              justifyContent: "center",
+              alignItems: "center",
+            },
+          }}
+        >
+          <Tab.Screen
+            name="Inicio"
+            component={HomeScreen}
+            options={{
+              tabBarIcon: () => (
+                <Image
+                  source={require("./assets/Home.png")}
+                  style={{ width: 28, height: 28, tintColor: "#000000" }}
                 />
+              ),
+            }}
+          />
 
                 <Tab.Screen
                     name="Crear"
@@ -106,5 +105,6 @@ export default function App() {
                 />
             </Tab.Navigator>
         </NavigationContainer>
+        </>
     );
 }

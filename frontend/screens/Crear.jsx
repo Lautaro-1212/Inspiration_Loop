@@ -72,7 +72,7 @@ export default function CrearScreen() {
     };
 
     // FUNCIÓN DE GUARDAR CON VALIDACIONES ESTRICTAS
-    const guardarRegistro = () => {
+    const guardarRegistro = async () => {
         if (!imagen) {
             Alert.alert('Falta la imagen', 'Debes seleccionar o tomar una foto antes de guardar.');
             return;
@@ -93,22 +93,48 @@ export default function CrearScreen() {
             return;
         }
 
-        Alert.alert(
-            '¡Éxito!', 
-            'Todos los datos están correctos y se han guardado.',
-            [
-                {
-                    text: 'OK',
-                    onPress: () => {
-                        setImagen(null);
-                        setNombre('');
-                        setCategoriaActual('');
-                        setCategorias([]);
-                        setDescripcion('');
-                    }
-                }
-            ]
-        )
+        try {
+            const formData = new FormData();
+
+            formData.append('name', nombre);
+
+            formData.append('categories', JSON.stringify(categorias));
+
+            formData.append('description', descripcion);
+
+            formData.append('image', {
+                uri: imagen,
+                name: 'imagen.jpg',
+                type: 'image/jpeg'
+            });
+
+            const response = await fetch('http://TU_IP:3000/images', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Error al guardar la imagen');
+            }
+
+            Alert.alert('¡Éxito!', 'La imagen se guardó correctamente.');
+
+            setImagen(null);
+            setNombre('');
+            setCategoriaActual('');
+            setCategorias([]);
+            setDescripcion('');
+
+        } catch (error) {
+            console.error(error);
+
+            Alert.alert(
+                'Error',
+                'No se pudo guardar la imagen.'
+            );
+        }
     };
 
     return (
