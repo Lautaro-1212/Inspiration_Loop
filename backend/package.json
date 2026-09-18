@@ -12,6 +12,7 @@
   "type": "module",
   "dependencies": {
     "better-sqlite3": "^13.0.3",
+    "cors": "^2.8.6",
     "express": "^5.2.1",
     "fs": "^0.0.1-security",
     "multer": "^2.4.0",

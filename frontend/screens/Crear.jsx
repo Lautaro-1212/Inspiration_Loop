@@ -74,52 +74,84 @@ export default function CrearScreen() {
     // FUNCIÓN DE GUARDAR CON VALIDACIONES ESTRICTAS
     const guardarRegistro = async () => {
         if (!imagen) {
-            Alert.alert('Falta la imagen', 'Debes seleccionar o tomar una foto antes de guardar.');
+            Alert.alert(
+                'Falta la imagen',
+                'Debes seleccionar o tomar una foto antes de guardar.'
+            );
             return;
         }
 
         if (!nombre.trim()) {
-            Alert.alert('Falta el nombre', 'Por favor escribe un nombre para la imagen.');
+            Alert.alert(
+                'Falta el nombre',
+                'Por favor escribe un nombre para la imagen.'
+            );
             return;
         }
 
         if (categorias.length === 0) {
-            Alert.alert('Falta la categoría', 'Debes agregar al menos una categoría a la lista.');
+            Alert.alert(
+                'Falta la categoría',
+                'Debes agregar al menos una categoría a la lista.'
+            );
             return;
         }
 
         if (!descripcion.trim()) {
-            Alert.alert('Falta la descripción', 'Por favor escribe una descripción.');
+            Alert.alert(
+                'Falta la descripción',
+                'Por favor escribe una descripción.'
+            );
             return;
         }
 
         try {
             const formData = new FormData();
 
-            formData.append('name', nombre);
+            formData.append('name', nombre.trim());
 
-            formData.append('categories', JSON.stringify(categorias));
+            formData.append(
+                'categories',
+                JSON.stringify(categorias)
+            );
 
-            formData.append('description', descripcion);
+            formData.append(
+                'description',
+                descripcion.trim()
+            );
 
-            formData.append('image', {
-                uri: imagen,
-                name: 'imagen.jpg',
-                type: 'image/jpeg'
-            });
+            // Convertimos la imagen a Blob para Expo Web
+            const responseImagen = await fetch(imagen);
+            const blob = await responseImagen.blob();
 
-            const response = await fetch('http://TU_IP:3000/images', {
-                method: 'POST',
-                body: formData
-            });
+            formData.append(
+                'image',
+                blob,
+                'imagen.jpg'
+            );
+
+            const response = await fetch(
+                'http://localhost:3000/api/images',
+                {
+                    method: 'POST',
+                    body: formData
+                }
+            );
 
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.error || 'Error al guardar la imagen');
+                throw new Error(
+                    data.error || 'Error al guardar la imagen'
+                );
             }
 
-            Alert.alert('¡Éxito!', 'La imagen se guardó correctamente.');
+            console.log('Respuesta del servidor:', data);
+
+            Alert.alert(
+                '¡Éxito!',
+                'La imagen se guardó correctamente.'
+            );
 
             setImagen(null);
             setNombre('');
@@ -128,7 +160,7 @@ export default function CrearScreen() {
             setDescripcion('');
 
         } catch (error) {
-            console.error(error);
+            console.error('Error al guardar:', error);
 
             Alert.alert(
                 'Error',

@@ -23,8 +23,9 @@ export function findById(id){
     return resultado;
 }
 
-export function create(image, categoryIds = []) {
+export function create(image, categoryNames = []) {
     const createTransaction = db.transaction((imageData, categories) => {
+
         // 1. Insertar la imagen
         const result = db.prepare(`
             INSERT INTO image (name, path, width, height, description)
@@ -39,27 +40,54 @@ export function create(image, categoryIds = []) {
 
         const imageId = result.lastInsertRowid;
 
-        // 2. Insertar solo categorías válidas
-        if (categories && categories.length > 0) {
-            const checkCategory = db.prepare(`SELECT id FROM category WHERE id = ?`);
-            const insertCategory = db.prepare(`
-                INSERT INTO image_category (image_id, category_id)
-                VALUES (?, ?)
-            `);
+        // 2. Preparar consultas para categorías
+        const findCategory = db.prepare(`
+            SELECT id
+            FROM category
+            WHERE name = ?
+        `);
 
-            for (const categoryId of categories) {
-                // Verificamos si existe antes de insertar en image_category
-                const categoryExists = checkCategory.get(categoryId);
-                if (categoryExists) {
-                    insertCategory.run(imageId, categoryId);
-                }
+        const createCategory = db.prepare(`
+            INSERT INTO category (name)
+            VALUES (?)
+        `);
+
+        const insertCategory = db.prepare(`
+            INSERT INTO image_category (image_id, category_id)
+            VALUES (?, ?)
+        `);
+
+        // 3. Procesar categorías
+        for (const categoryName of categories) {
+
+            const name = categoryName.trim();
+
+            if (!name) {
+                continue;
             }
+
+            let category = findCategory.get(name);
+
+            // Si no existe, la creamos
+            if (!category) {
+                const resultCategory = createCategory.run(name);
+
+                category = {
+                    id: resultCategory.lastInsertRowid
+                };
+            }
+
+            // 4. Crear relación imagen ↔ categoría
+            insertCategory.run(imageId, category.id);
         }
 
-        return { imageId, changes: result.changes };
+        return {
+            imageId,
+            changes: result.changes
+        };
     });
 
-    return createTransaction(image, categoryIds);
+    return createTransaction(image, categoryNames);
 }
 
 export function deleteById(id){

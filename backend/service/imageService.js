@@ -15,21 +15,21 @@ export function postImage(bodyData, fileData) {
     const dimensions = imageSize(buffer);
 
     const imageData = {
-    name: bodyData.name || fileData.originalname,
-    path: fileData.path,
-    width: dimensions.width,
-    height: dimensions.height,
-    description: bodyData.description
-};
+        name: bodyData.name || fileData.originalname,
+        path: fileData.path,
+        width: dimensions.width,
+        height: dimensions.height,
+        description: bodyData.description
+    };
 
     // Parsear las categorías enviadas desde req.body
-    let categoryIds = [];
+    let categoryNames = [];
 
     if (bodyData.categories) {
-        categoryIds = JSON.parse(bodyData.categories);
+        categoryNames = JSON.parse(bodyData.categories);
     }
 
-    return create(imageData, categoryIds);
+    return create(imageData, categoryNames);
 }
 
 export function deleteImageXId(id){

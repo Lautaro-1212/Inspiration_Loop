@@ -1,4 +1,4 @@
-import db from  '../config/database.js'
+import db from '../config/database.js'
 
 export function startBDD(){
     db.exec(`
@@ -6,9 +6,9 @@ export function startBDD(){
             id INTEGER PRIMARY KEY,
             name TEXT NOT NULL,
             path TEXT NOT NULL,
-            width INTEGER, 
+            width INTEGER,
             height INTEGER,
-            description TEXT NOT NULL
+            description TEXT
         );
 
         CREATE TABLE IF NOT EXISTS category(
