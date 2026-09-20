@@ -1,86 +1,188 @@
-import React from 'react';  
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { 
+  View, 
+  Text, 
+  FlatList, 
+  Image, 
+  ActivityIndicator, 
+  StyleSheet, 
+  RefreshControl,
+  Dimensions
+} from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 
-export default function HomeScreen({ publicaciones }) {
-  const datosFicticios = [
-    { id: '1', nombre: 'Imagen1', alto: 220 },
-    { id: '2', nombre: 'Imagen2', alto: 300 },
-    { id: '3', nombre: 'Imagen3', alto: 260 },
-    { id: '4', nombre: 'Imagen4', alto: 200 },
-    { id: '5', nombre: 'Imagen5', alto: 180 },
-    { id: '6', nombre: 'Imagen6', alto: 240 },
-  ];
+const { width } = Dimensions.get('window');
+// Calculamos el ancho de cada tarjeta para 2 columnas con márgenes
+const CARD_WIDTH = (width - 48) / 2;
 
-  // Si recibes publicaciones reales usa esas, de lo contrario muestra los placeholders de prueba
-  const listaAUsar = (publicaciones && publicaciones.length > 0) ? publicaciones : datosFicticios;
+// --- COMPONENTE RENDER TARJETA (ESTILO MVP) ---
+function RenderTarjeta({ item, index }) {
+  const imageUri = item.imageUrl || item.image || item.uri;
 
-  const columnaIzquierda = listaAUsar.filter((_, index) => index % 2 === 0);
-  const columnaDerecha = listaAUsar.filter((_, index) => index % 2 !== 0);
-
-  const RenderTarjeta = ({ item }) => (
-    <TouchableOpacity style={styles.card}>
-      {/* Caja blanca en lugar de <Image> */}
-      <View style={[styles.placeholderBlanco, { height: item.alto || 200 }]} />
-      <Text style={styles.titulo}>{item.nombre}</Text>
-    </TouchableOpacity>
-  );
+  // Variamos la altura entre elementos pares e impares para simular el efecto Masonry/intercalado
+  const cardHeight = index % 2 === 0 ? 180 : 240;
 
   return (
-    <ScrollView 
-  style={styles.container} 
-  contentContainerStyle={styles.scrollContent}
-  indicatorStyle="default" // Opciones: 'default', 'black', 'white' (principalmente para iOS y algunas capas de Android)
->
-      <View style={styles.masonryContainer}>
-        {/* Columna Izquierda */}
-        <View style={styles.columna}>
-          {columnaIzquierda.map((item, index) => (
-            <RenderTarjeta key={item.id || index} item={item} />
-          ))}
-        </View>
-
-        {/* Columna Derecha */}
-        <View style={styles.columna}>
-          {columnaDerecha.map((item, index) => (
-            <RenderTarjeta key={item.id || index} item={item} />
-          ))}
-        </View>
+    <View style={styles.cardWrapper}>
+      <View style={[styles.cardContainer, { height: cardHeight }]}>
+        {imageUri ? (
+          <Image 
+            source={{ uri: imageUri }} 
+            style={styles.cardImage} 
+            resizeMode="cover"
+          />
+        ) : (
+          <View style={styles.noImageContainer}>
+            <Text style={styles.noImageText}>Sin Imagen</Text>
+          </View>
+        )}
       </View>
-    </ScrollView>
+      {/* Título debajo de la tarjeta */}
+      <Text style={styles.cardTitle} numberOfLines={1}>
+        {item.name || item.nombre || `Imagen${index + 1}`}
+      </Text>
+    </View>
+  );
+}
+
+export default function HomeScreen() {
+  const [tarjetas, setTarjetas] = useState([]);
+  const [cargando, setCargando] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const API_URL = 'http://localhost:3000/api/images/random';
+  const SERVER_BASE_URL = 'http://localhost:3000'; 
+
+  const obtenerImagenes = async () => {
+    try {
+      const response = await fetch(API_URL);
+      const data = await response.json();
+
+      if (response.ok && data.mensaje) {
+        const tarjetasFormateadas = data.mensaje.map((item) => {
+          const filename = item.path ? item.path.split(/[/\\]/).pop() : '';
+          const urlFinal = filename ? `${SERVER_BASE_URL}/uploads/images/${filename}` : null;
+          
+          return {
+            ...item,
+            imageUrl: urlFinal
+          };
+        });
+
+        setTarjetas(tarjetasFormateadas);
+      } else {
+        console.error('Error al obtener imágenes:', data.error);
+      }
+    } catch (error) {
+      console.error('Error de red al consultar el endpoint:', error);
+    } finally {
+      setCargando(false);
+      setRefreshing(false);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      obtenerImagenes();
+    }, [])
+  );
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    obtenerImagenes();
+  };
+
+  if (cargando) {
+    return (
+      <View style={[styles.container, styles.center]}>
+        <ActivityIndicator size="large" color="#FFF" />
+        <Text style={styles.loadingText}>Cargando imágenes...</Text>
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={tarjetas}
+        keyExtractor={(item, index) => item.id?.toString() || item._id?.toString() || index.toString()}
+        renderItem={({ item, index }) => <RenderTarjeta item={item} index={index} />}
+        numColumns={2}
+        columnWrapperStyle={styles.columnWrapper}
+        contentContainerStyle={styles.listPadding}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['#28a745']} />
+        }
+        ListEmptyComponent={
+          <View style={styles.center}>
+            <Text style={styles.emptyText}>No hay imágenes registradas aún.</Text>
+          </View>
+        }
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#737785', // Color de fondo gris como tu diseño
+    backgroundColor: '#6c7383', // Tono gris/azulado similar al fondo de la maqueta
   },
-  scrollContent: {
-    padding: 15,
-    paddingBottom: 100,
-    
+  listPadding: {
+    paddingHorizontal: 16,
+    paddingTop: 20,
+    paddingBottom: 40,
   },
-  masonryContainer: {
-    paddingTop:20,
-    flexDirection: 'row',
+  columnWrapper: {
     justifyContent: 'space-between',
+    marginBottom: 15,
   },
-  columna: {
-    width: '48%',
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 50,
   },
-  card: {
-    
-    marginBottom: 16,
+  loadingText: {
+    color: '#FFF',
+    marginTop: 10,
+    fontSize: 16,
   },
-  placeholderBlanco: {
-    width: '100%',
-    backgroundColor: '#FFFFFF', // Recuadro blanco sólido
-    borderRadius: 15,
-  },
-  titulo: {
-    marginTop: 6,
-    fontSize: 14,
-    color: '#000',
+  emptyText: {
+    color: '#FFF',
+    fontSize: 18,
     fontWeight: '500',
+    textAlign: 'center',
+  },
+
+  // ESTILOS NUEVOS BASADOS EN EL MVP
+  cardWrapper: {
+    width: CARD_WIDTH,
+  },
+  cardContainer: {
+    width: '100%',
+    backgroundColor: '#FFF',
+    borderRadius: 16,
+    overflow: 'hidden',
+  },
+  cardImage: {
+    width: '100%',
+    height: '100%',
+  },
+  noImageContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFF',
+  },
+  noImageText: {
+    color: '#888',
+  },
+  cardTitle: {
+    fontSize: 15,
+    fontWeight: '400',
+    color: '#000',
+    marginTop: 6,
+    marginLeft: 2,
   },
 });
