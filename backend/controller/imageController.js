@@ -1,5 +1,5 @@
 import express from "express"
-import { getImages ,getImagesXId, postImage, deleteImageXId } from "../service/imageService.js";
+import { getImages ,getImagesXId, getRandomImages ,postImage, deleteImageXId } from "../service/imageService.js";
 import { upload } from "../config/multer.js";
 
 const router = express.Router();
@@ -9,6 +9,11 @@ router.get("/", (req, res) => {
     res.send({ mensaje: data });
 });
 
+router.get("/random", (req, res) => {
+    let data = getRandomImages();
+    res.send({ mensaje: data });
+});
+    
 router.get("/:id", (req,res) => {
     let data = getImagesXId(req.params.id);
     res.send({ mensaje: data });

@@ -23,6 +23,16 @@ export function findById(id){
     return resultado;
 }
 
+export function randomImages(){
+    const resultado = db.prepare(`
+        SELECT *
+        FROM image
+        ORDER BY RANDOM()
+    `).all();
+
+    return resultado;
+}
+
 export function create(image, categoryNames = []) {
     const createTransaction = db.transaction((imageData, categories) => {
 
