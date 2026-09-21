@@ -7,24 +7,28 @@ import {
   ActivityIndicator, 
   StyleSheet, 
   RefreshControl,
-  Dimensions
+  Dimensions,
+  TouchableOpacity,
+  Modal,
+  ScrollView
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
-// Calculamos el ancho de cada tarjeta para 2 columnas con márgenes
 const CARD_WIDTH = (width - 48) / 2;
 
-// --- COMPONENTE RENDER TARJETA (ESTILO MVP) ---
-function RenderTarjeta({ item, index }) {
+// --- COMPONENTE RENDER TARJETA ---
+function RenderTarjeta({ item, index, onSelectImage }) {
   const imageUri = item.imageUrl || item.image || item.uri;
-
-  // Variamos la altura entre elementos pares e impares para simular el efecto Masonry/intercalado
   const cardHeight = index % 2 === 0 ? 180 : 240;
 
   return (
     <View style={styles.cardWrapper}>
-      <View style={[styles.cardContainer, { height: cardHeight }]}>
+      <TouchableOpacity 
+        activeOpacity={0.8}
+        onPress={() => onSelectImage(item)}
+        style={[styles.cardContainer, { height: cardHeight }]}
+      >
         {imageUri ? (
           <Image 
             source={{ uri: imageUri }} 
@@ -36,10 +40,11 @@ function RenderTarjeta({ item, index }) {
             <Text style={styles.noImageText}>Sin Imagen</Text>
           </View>
         )}
-      </View>
+      </TouchableOpacity>
+      
       {/* Título debajo de la tarjeta */}
       <Text style={styles.cardTitle} numberOfLines={1}>
-        {item.name || item.nombre || `Imagen${index + 1}`}
+        {item.name || item.nombre || `Imagen ${index + 1}`}
       </Text>
     </View>
   );
@@ -49,6 +54,10 @@ export default function HomeScreen() {
   const [tarjetas, setTarjetas] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+
+  // Guardamos todo el objeto de la tarjeta seleccionada
+  const [modalVisible, setModalVisible] = useState(false);
+  const [tarjetaSeleccionada, setTarjetaSeleccionada] = useState(null);
 
   const API_URL = 'http://localhost:3000/api/images/random';
   const SERVER_BASE_URL = 'http://localhost:3000'; 
@@ -92,6 +101,23 @@ export default function HomeScreen() {
     obtenerImagenes();
   };
 
+  const abrirTarjeta = (item) => {
+    setTarjetaSeleccionada(item);
+    setModalVisible(true);
+  };
+
+  // Normalizador de categorías para admitir arrays o strings JSON parseados
+  const obtenerCategorias = (item) => {
+    if (!item?.categories && !item?.categoria) return [];
+    const cat = item.categories || item.categoria;
+    if (Array.isArray(cat)) return cat;
+    try {
+      return JSON.parse(cat);
+    } catch {
+      return [cat];
+    }
+  };
+
   if (cargando) {
     return (
       <View style={[styles.container, styles.center]}>
@@ -101,12 +127,21 @@ export default function HomeScreen() {
     );
   }
 
+  const imageUriModal = tarjetaSeleccionada?.imageUrl || tarjetaSeleccionada?.image || tarjetaSeleccionada?.uri;
+  const listaCategorias = tarjetaSeleccionada ? obtenerCategorias(tarjetaSeleccionada) : [];
+
   return (
     <View style={styles.container}>
       <FlatList
         data={tarjetas}
         keyExtractor={(item, index) => item.id?.toString() || item._id?.toString() || index.toString()}
-        renderItem={({ item, index }) => <RenderTarjeta item={item} index={index} />}
+        renderItem={({ item, index }) => (
+          <RenderTarjeta 
+            item={item} 
+            index={index} 
+            onSelectImage={abrirTarjeta} 
+          />
+        )}
         numColumns={2}
         columnWrapperStyle={styles.columnWrapper}
         contentContainerStyle={styles.listPadding}
@@ -119,6 +154,63 @@ export default function HomeScreen() {
           </View>
         }
       />
+
+      {/* MODAL DETALLADO */}
+      <Modal
+        visible={modalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalBackground}>
+          <TouchableOpacity 
+            onPress={() => setModalVisible(false)}
+            style={styles.closeButton}
+          >
+            <Text style={styles.closeButtonText}> ✕ Cerrar </Text>
+          </TouchableOpacity>
+
+          {tarjetaSeleccionada && (
+            <ScrollView 
+              contentContainerStyle={styles.modalScrollContent} 
+              showsVerticalScrollIndicator={false}
+            >
+              {/* Imagen principal */}
+              {imageUriModal && (
+                <Image 
+                  source={{ uri: imageUriModal }} 
+                  style={styles.fullImage} 
+                  resizeMode="contain"
+                />
+              )}
+
+              {/* Contenedor de información debajo de la imagen */}
+              <View style={styles.modalInfoContainer}>
+                {/* Nombre */}
+                <Text style={styles.modalTitle}>
+                  {tarjetaSeleccionada.name || tarjetaSeleccionada.nombre || 'Sin título'}
+                </Text>
+
+                {/* Lista de Categorías */}
+                {listaCategorias.length > 0 && (
+                  <View style={styles.categoriesWrapper}>
+                    {listaCategorias.map((cat, idx) => (
+                      <View key={idx} style={styles.categoryBadge}>
+                        <Text style={styles.categoryBadgeText}>{cat}</Text>
+                      </View>
+                    ))}
+                  </View>
+                )}
+
+                {/* Descripción */}
+                <Text style={styles.modalDescription}>
+                  {tarjetaSeleccionada.description || tarjetaSeleccionada.descripcion || 'Sin descripción disponible.'}
+                </Text>
+              </View>
+            </ScrollView>
+          )}
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -126,7 +218,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#6c7383', // Tono gris/azulado similar al fondo de la maqueta
+    backgroundColor: '#6c7383',
   },
   listPadding: {
     paddingHorizontal: 16,
@@ -154,8 +246,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textAlign: 'center',
   },
-
-  // ESTILOS NUEVOS BASADOS EN EL MVP
   cardWrapper: {
     width: CARD_WIDTH,
   },
@@ -185,4 +275,72 @@ const styles = StyleSheet.create({
     marginTop: 6,
     marginLeft: 2,
   },
+
+  // ESTILOS PARA EL MODAL CON INFORMACIÓN DETALLADA
+modalBackground: {
+  flex: 1,
+  backgroundColor: '#FFFFFF', // Fondo blanco
+},
+modalScrollContent: {
+  alignItems: 'center',
+  justifyContent: 'center', // Centra todo verticalmente
+  paddingVertical: 40,
+  paddingHorizontal: 20,
+  marginTop:150
+},
+closeButton: {
+  position: 'absolute',
+  top: 40,
+  right: 20,
+  zIndex: 10,
+  padding: 10,
+  backgroundColor: 'rgba(0, 0, 0, 0.1)', // Fondo gris traslúcido
+  borderRadius: 20,
+},
+closeButtonText: {
+  color: '#000000', // Texto negro
+  fontWeight: 'bold',
+  fontSize: 18,
+},
+  fullImage: {
+    width: width * 0.85,
+    height: 350,
+    borderRadius: 12,
+  },
+  modalInfoContainer: {
+    width: width * 0.85,
+    marginTop: 20,
+    alignItems: 'flex-start',
+  },
+  modalTitle: {
+  color: '#000000', // Texto negro
+  fontSize: 22,
+  fontWeight: 'bold',
+  marginBottom: 10,
+},
+  categoriesWrapper: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 12,
+  },
+  categoryBadge: {
+  backgroundColor: '#E0E0E0', // Fondo gris claro
+  paddingHorizontal: 10,
+  paddingVertical: 4,
+  borderRadius: 6,
+  marginRight: 6,
+  marginBottom: 6,
+  borderWidth: 1,
+  borderColor: '#CCC',
+},
+categoryBadgeText: {
+  color: '#000000', // Texto negro
+  fontSize: 13,
+  fontWeight: '600',
+},
+ modalDescription: {
+  color: '#333333', // Texto gris oscuro/negro
+  fontSize: 15,
+  lineHeight: 22,
+},
 });
