@@ -22,7 +22,7 @@ Frontend, creacion de las plantillas, busqueda de assets e iconos y funcionalida
 
 <img src="docs/esquemaDeBasesDeDatos.png" alt="Esquema de bases de datos" width="600">
 
-ACLARACION: Se usa INTREGRER o TEXT, ya que la base de datos usada es SQLite, y los tipos son dististintos.
+ACLARACION: Se usa INTREGRER o TEXT, ya que la base de datos usada es SQLite, y los tipos son distintos.
 
 # Croquies de cada pantalla:
 
