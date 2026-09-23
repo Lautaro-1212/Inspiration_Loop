@@ -16,7 +16,7 @@ import { useFocusEffect } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = (width - 48) / 2;
-const IP = '192.168.100.129';
+const IP = 'localhost';
 const PORT = '3000'
 
 // --- COMPONENTE RENDER TARJETA ---

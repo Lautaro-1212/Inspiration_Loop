@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Image, TouchableOpacity, Alert, Modal } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-const IP = '192.168.100.129';
+const IP = 'localhost';
 const PORT = '3000'
 
 export default function CrearScreen() {
