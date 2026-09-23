@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Image, TouchableOpacity, Alert, Modal } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+const IP = 'localhost';
+const PORT = '3000'
 
 export default function CrearScreen() {
     const [imagen, setImagen] = useState(null);
@@ -129,7 +131,7 @@ export default function CrearScreen() {
             console.log("Enviando imagen al backend...");
 
             const response = await fetch(
-                'http:/localhost/api/images',
+                `http:/${IP}:${PORT}/api/images`,
                 {
                     method: 'POST',
                     body: formData

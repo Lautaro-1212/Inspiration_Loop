@@ -16,6 +16,8 @@ import { useFocusEffect } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = (width - 48) / 2;
+const IP = 'localhost';
+const PORT = '3000'
 
 // --- COMPONENTE RENDER TARJETA ---
 function RenderTarjeta({ item, index, onSelectImage }) {
@@ -59,8 +61,8 @@ export default function HomeScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [tarjetaSeleccionada, setTarjetaSeleccionada] = useState(null);
 
-  const API_URL = 'http://localhost/api/images/random';
-  const SERVER_BASE_URL = 'http://localhost:3000'; 
+  const SERVER_BASE_URL = `http://${IP}:${PORT}`; 
+  const API_URL = `http://${IP}:${PORT}/api/images/random`;
 
   const obtenerImagenes = async () => {
     try {
@@ -76,14 +78,20 @@ export default function HomeScreen() {
 
       if (response.ok && data.mensaje) {
         const tarjetasFormateadas = data.mensaje.map((item) => {
-          const filename = item.path ? item.path.split(/[/\\]/).pop() : '';
-          const urlFinal = filename ? `${SERVER_BASE_URL}/uploads/images/${filename}` : null;
-          
-          return {
+        const filename = item.path ? item.path.split(/[/\\]/).pop() : '';
+
+        const urlFinal = filename
+            ? `${SERVER_BASE_URL}/uploads/images/${filename}`
+            : null;
+
+        console.log("IMAGEN:", filename);
+        console.log("URL:", urlFinal);
+
+        return {
             ...item,
             imageUrl: urlFinal
-          };
-        });
+        };
+    });
 
         setTarjetas(tarjetasFormateadas);
       } else {

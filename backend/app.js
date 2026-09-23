@@ -7,7 +7,7 @@ import { dirname } from './config/fileStorage.js';
 
 const app = express();
 const PORT = 3000;
-export const IP = "localhost";
+const IP = "localhost";
 
 app.use(cors());
 app.use(express.json());
