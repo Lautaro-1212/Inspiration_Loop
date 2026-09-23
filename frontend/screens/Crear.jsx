@@ -120,23 +120,23 @@ export default function CrearScreen() {
                 descripcion.trim()
             );
 
-            // Convertimos la imagen a Blob para Expo Web
-            const responseImagen = await fetch(imagen);
-            const blob = await responseImagen.blob();
+            formData.append('image', {
+                uri: imagen,
+                name: 'imagen.jpg',
+                type: 'image/jpeg'
+            });
 
-            formData.append(
-                'image',
-                blob,
-                'imagen.jpg'
-            );
+            console.log("Enviando imagen al backend...");
 
             const response = await fetch(
-                'http://localhost:3000/api/images',
+                'http:/localhost/api/images',
                 {
                     method: 'POST',
                     body: formData
                 }
             );
+
+            console.log("Status:", response.status);
 
             const data = await response.json();
 

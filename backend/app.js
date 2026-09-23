@@ -7,6 +7,7 @@ import { dirname } from './config/fileStorage.js';
 
 const app = express();
 const PORT = 3000;
+export const IP = "localhost";
 
 app.use(cors());
 app.use(express.json());
@@ -15,8 +16,8 @@ app.use('/uploads', express.static(path.join(dirname, '..', 'uploads')));
 app.use("/api/images", imageRouter)
 
 function startHTTP(){
-    app.listen(PORT, () => {
-        console.log(`Server start in http://localhost:${PORT}`);
+    app.listen(PORT, '0.0.0.0', () => {
+        console.log(`Server start in http://${IP}:${PORT}`);
     });
 }
 

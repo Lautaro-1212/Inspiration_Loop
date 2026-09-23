@@ -59,13 +59,20 @@ export default function HomeScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [tarjetaSeleccionada, setTarjetaSeleccionada] = useState(null);
 
-  const API_URL = 'http://localhost:3000/api/images/random';
+  const API_URL = 'http://localhost/api/images/random';
   const SERVER_BASE_URL = 'http://localhost:3000'; 
 
   const obtenerImagenes = async () => {
     try {
+      console.log("Intentando conectar a:", API_URL);
+
       const response = await fetch(API_URL);
+
+      console.log("Status:", response.status);
+
       const data = await response.json();
+
+      console.log("Respuesta:", data);
 
       if (response.ok && data.mensaje) {
         const tarjetasFormateadas = data.mensaje.map((item) => {
@@ -82,8 +89,8 @@ export default function HomeScreen() {
       } else {
         console.error('Error al obtener imágenes:', data.error);
       }
-    } catch (error) {
-      console.error('Error de red al consultar el endpoint:', error);
+      } catch (error) {
+      console.error("ERROR FETCH:", error);
     } finally {
       setCargando(false);
       setRefreshing(false);
