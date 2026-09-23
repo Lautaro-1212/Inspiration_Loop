@@ -16,24 +16,24 @@ import { useFocusEffect } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = (width - 48) / 2;
-const IP = 'localhost';
+const IP = '192.168.100.129';
 const PORT = '3000'
 
 // --- COMPONENTE RENDER TARJETA ---
-function RenderTarjeta({ item, index, onSelectImage }) {
+function RenderTarjeta({ item, index }) {
   const imageUri = item.imageUrl || item.image || item.uri;
   const cardHeight = index % 2 === 0 ? 180 : 240;
 
   return (
     <View style={styles.cardWrapper}>
       <TouchableOpacity 
-        activeOpacity={0.8}
-        onPress={() => onSelectImage(item)}
+        activeOpacity={1} // Mantiene la opacidad visual intacta al tocar
+        onPress={() => {}} // No realiza ninguna acción
         style={[styles.cardContainer, { height: cardHeight }]}
       >
         {imageUri ? (
           <Image 
-            source={{ uri: imageUri }} 
+            source={typeof imageUri === 'string' ? { uri: imageUri } : imageUri} 
             style={styles.cardImage} 
             resizeMode="cover"
           />
@@ -262,6 +262,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   cardWrapper: {
+        marginTop:40,
     width: CARD_WIDTH,
   },
   cardContainer: {
