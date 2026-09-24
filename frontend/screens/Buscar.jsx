@@ -22,8 +22,7 @@ const tarjetasPlaceholders = [
     name: 'Fondos de pantalla',
     image: require('../assets/fondospantalla.jpg'),
     description: 'Colección de fondos de pantalla HD y 4K.',
-    categories: ['Wallpapers', 'Diseño'],
-    borderColor: '#7C3AED', // Borde morado como en la imagen
+    categories: ['Wallpapers', 'Diseño'], 
     resizeMode:"cover",
     justifyContent:'center',
     alignItems:'center'
@@ -61,7 +60,7 @@ const tarjetasPlaceholders = [
   {
     id: '8',
     name: 'Paletas de colores',
-    image:require('../assets/paleta de colores.avif') ,
+    image:require('../assets/paletadecolores.avif') ,
   },
 ];
 
