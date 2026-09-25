@@ -29,7 +29,7 @@ export default function ProfileScreen() {
   const fetchProfileImages = async () => {
     try {
       // Reemplaza por tu URL base / IP local si estás testeando en dispositivo físico (ej: http://192.168.1.X:3000/api/images)
-      const response = await fetch(`http://${IP}:${PORT}/api/images`);
+      const response = await fetch(`https://${IP}/api/images`);
       const data = await response.json();
       setImages(data);
     } catch (error) {

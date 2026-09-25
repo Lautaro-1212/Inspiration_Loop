@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, Alert, Modal } from 'react-native';
+import { View, Text, TextInput, Image, TouchableOpacity, Alert, Modal, Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 const IP = process.env.EXPO_PUBLIC_API_IP;
 const PORT = process.env.EXPO_PUBLIC_API_PORT;
@@ -41,6 +41,7 @@ export default function CrearScreen() {
         });
 
         if (!result.canceled) {
+            console.log('ASSET GALERIA:', result.assets[0]);
             setImagen(result.assets[0].uri);
         }
     };
@@ -58,6 +59,7 @@ export default function CrearScreen() {
         });
 
         if (!result.canceled) {
+            console.log('ASSET CAMARA:', result.assets[0]);
             setImagen(result.assets[0].uri);
         }
     };
@@ -122,16 +124,31 @@ export default function CrearScreen() {
                 descripcion.trim()
             );
 
-            formData.append('image', {
-                uri: imagen,
-                name: 'imagen.jpg',
-                type: 'image/jpeg'
-            });
+            if (Platform.OS === 'web') {
+                const responseImagen = await fetch(imagen);
+                const blob = await responseImagen.blob();
+
+                formData.append(
+                    'image',
+                    blob,
+                    'imagen.jpg'
+                );
+            } else {
+                formData.append(
+                    'image',
+                    {
+                        uri: imagen,
+                        name: 'imagen.jpg',
+                        type: 'image/jpeg'
+                    }
+                );
+            }
 
             console.log("Enviando imagen al backend...");
+            console.log("URL:", `https://${IP}/api/images`);
 
             const response = await fetch(
-                `http:/${IP}:${PORT}/api/images`,
+                `https://${IP}/api/images`,
                 {
                     method: 'POST',
                     body: formData

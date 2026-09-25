@@ -61,7 +61,7 @@ export default function HomeScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [tarjetaSeleccionada, setTarjetaSeleccionada] = useState(null);
 
-  const API_URL = `http://${IP}:${PORT}/api/images/random`;
+  const API_URL = `https://${IP}/api/images/random`;
 
   const obtenerImagenes = async () => {
     try {
@@ -80,7 +80,7 @@ export default function HomeScreen() {
         const filename = item.path ? item.path.split(/[/\\]/).pop() : '';
 
         const urlFinal = filename
-            ? `http://${IP}:${PORT}/uploads/images/${filename}`
+            ? `http://${IP}/uploads/images/${filename}`
             : null;
 
         console.log("IMAGEN:", filename);
