@@ -143,28 +143,48 @@ export default function HomeScreen() {
 
     return (
       <View style={styles.container}>
-    <FlatList
-      data={tarjetas}
-      keyExtractor={(item, index) => item.id?.toString() || item._id?.toString() || index.toString()}
-      renderItem={({ item, index }) => (
-        <RenderTarjeta 
-          item={item} 
-          index={index} 
-          onPress={abrirTarjeta} 
-        />
-      )}
-      numColumns={2}
-      columnWrapperStyle={styles.columnWrapper}
-      contentContainerStyle={styles.listPadding}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['#28a745']} />
-      }
-      ListEmptyComponent={
-        <View style={styles.center}>
-          <Text style={styles.emptyText}>No hay imágenes registradas aún.</Text>
-        </View>
-      }
-    />
+        <ScrollView 
+          contentContainerStyle={styles.listPadding}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['#28a745']} />
+          }
+        >
+          {tarjetas.length === 0 ? (
+            <View style={styles.center}>
+              <Text style={styles.emptyText}>No hay imágenes registradas aún.</Text>
+            </View>
+          ) : (
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              {/* Columna Izquierda */}
+              <View style={styles.columnaIzquierda}>
+                {tarjetas
+                  .filter((_, index) => index % 2 === 0)
+                  .map((item, index) => (
+                    <RenderTarjeta 
+                      key={item.id?.toString() || item._id?.toString() || `left-${index}`} 
+                      item={item} 
+                      index={index * 2} 
+                      onPress={abrirTarjeta} 
+                    />
+                  ))}
+              </View>
+
+              {/* Columna Derecha */}
+              <View style={styles.columnaDerecha}>
+                {tarjetas
+                  .filter((_, index) => index % 2 !== 0)
+                  .map((item, index) => (
+                    <RenderTarjeta 
+                      key={item.id?.toString() || item._id?.toString() || `right-${index}`} 
+                      item={item} 
+                      index={index * 2 + 1} 
+                      onPress={abrirTarjeta} 
+                    />
+                  ))}
+              </View>
+            </View>
+          )}
+        </ScrollView>
 
         {/* MODAL DETALLADO */}
         <Modal
@@ -259,7 +279,7 @@ export default function HomeScreen() {
     },
     cardWrapper: {
       marginTop:20,
-      width: CARD_WIDTH,
+      width: '100%',
     },
     cardContainer: {
       width: '100%',
@@ -376,9 +396,13 @@ export default function HomeScreen() {
       fontSize: 15,
       lineHeight: 22,
     },
-    columnaDerecha:
-    {
-      marginTop:20,
-      marginBottom:30,
+    columnaDerecha: {
+      flex: 1,
+      marginLeft: 6,
+      marginTop: 30, // <-- Desfase para bajar levemente la segunda columna
     },
+    columnaIzquierda: {
+    flex: 1,
+    marginRight: 6,
+},
 });
