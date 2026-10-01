@@ -54,9 +54,14 @@ https://try.cloudflare.com/#install
 Inspiration_Loop/backend/node app.js
 ```
 
-3) Y en otra terminal abrir el tunel con el cloudflar:
+3) En otra terminal abrir el tunel con el cloudflar:
 
 ```bash
 cloudflared tunnel --url http://localhost:3000 2>&1 | grep --line-buffered -o 'https://[^ ]*trycloudflare.com'
 ```
 
+4) Y por ultimo crear un .env con el formato del .env.example y pegar la URL en la parte de: 
+
+```bash
+EXPO_PUBLIC_API_IP = URL de cloudflare
+```
