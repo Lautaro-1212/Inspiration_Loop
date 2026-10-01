@@ -41,3 +41,22 @@ Pantalla buscar
 Pantalla perfil
 
 <img src="docs/pantallaPerfil.png" alt="Pantalla de perfil" width="400" height="600">
+
+## ¿ Como poder usar el back desde cualquier dispostivo ?
+
+1) Primero instalar cloudflare desde esta pagina: 
+
+https://try.cloudflare.com/#install
+
+2) Luego de eso lavantar el back en un terminal de esta manera: 
+
+```bash
+Inspiration_Loop/backend/node app.js
+```
+
+3) Y en otra terminal abrir el tunel con el cloudflar:
+
+```bash
+cloudflared tunnel --url http://localhost:3000 2>&1 | grep --line-buffered -o 'https://[^ ]*trycloudflare.com'
+```
+
