@@ -191,7 +191,7 @@ export default function CrearScreen() {
     return (
         <View style={{ width: '100%', height: '100%', backgroundColor: '#969aa8' }}>
             
-            <Text style={{ fontSize: 25, marginLeft: '5%', marginTop: '10%', marginBottom: '1%' }}>Imagen:</Text>
+            <Text style={{ fontSize: 25, marginLeft: '5%', marginTop: '3%', marginBottom: '2%' }}>Imagen:</Text>
             
             <TouchableOpacity 
                 onPress={() => {
@@ -296,7 +296,7 @@ export default function CrearScreen() {
 
             <View style={{
                 position: 'absolute',
-                bottom: 110, 
+                bottom: 90, 
                 left: '5%',
                 right: '5%',
                 height: '8%',
@@ -325,7 +325,7 @@ export default function CrearScreen() {
                 onPress={guardarRegistro}
                 style={{
                     position: 'absolute',
-                    bottom: 30,
+                    bottom: -10,
                     left: '5%',
                     right: '5%',
                     backgroundColor: '#28a745',
