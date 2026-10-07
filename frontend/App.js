@@ -29,7 +29,7 @@ export default function App() {
               left: 0,
               right: 0,
               height: 75,
-              backgroundColor: "#224484",
+              backgroundColor: "#043ca4",
               borderTopWidth: 0,
               elevation: 0,
               paddingBottom: 15,

@@ -249,12 +249,12 @@ export default function HomeScreen() {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#6c7383',
+      backgroundColor: '#000',
     },
     listPadding: {
       paddingHorizontal: 16,
       paddingTop: 20,
-      paddingBottom: 10,
+      paddingBottom: 80,
     },
     columnWrapper: {
       justifyContent: 'space-between',
@@ -302,7 +302,7 @@ export default function HomeScreen() {
     cardTitle: {
       fontSize: 15,
       fontWeight: '400',
-      color: '#000',
+      color: '#000000',
       marginTop: 6,
       backgroundColor: '#FFF',
       borderRadius: 16,
@@ -324,7 +324,7 @@ export default function HomeScreen() {
     cardTitle: {
       fontSize: 15,
       fontWeight: '400',
-      color: '#000',
+      color: '#ffffff',
       marginTop: 6,
       marginLeft: 2,
     },
@@ -339,7 +339,7 @@ export default function HomeScreen() {
       justifyContent: 'center', // Centra todo verticalmente
       paddingVertical: 40,
       paddingHorizontal: 20,
-      marginTop:150
+      marginTop:10
     },
     closeButton: {
       position: 'absolute',
@@ -355,28 +355,28 @@ export default function HomeScreen() {
       fontWeight: 'bold',
       fontSize: 18,
     },
-      fullImage: {
-        width: width * 0.85,
-        height: 350,
-        borderRadius: 12,
-      },
-      modalInfoContainer: {
-        width: width * 0.85,
-        marginTop: 20,
-        alignItems: 'flex-start',
-      },
-      modalTitle: {
+    fullImage: {
+      width: width * 0.85,
+      height: 350,
+      borderRadius: 12,
+    },
+    modalInfoContainer: {
+      width: width * 0.85,
+      marginTop: 20,
+      alignItems: 'flex-start',
+    },
+    modalTitle: {
       color: '#000000', // Texto negro
       fontSize: 22,
       fontWeight: 'bold',
       marginBottom: 10,
     },
-      categoriesWrapper: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        marginBottom: 12,
-      },
-      categoryBadge: {
+    categoriesWrapper: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      marginBottom: 12,
+    },
+    categoryBadge: {
       backgroundColor: '#E0E0E0', // Fondo gris claro
       paddingHorizontal: 10,
       paddingVertical: 4,
@@ -399,10 +399,10 @@ export default function HomeScreen() {
     columnaDerecha: {
       flex: 1,
       marginLeft: 6,
-      marginTop: 30, // <-- Desfase para bajar levemente la segunda columna
+      marginTop: 24, // <-- Desfase para bajar levemente la segunda columna
     },
     columnaIzquierda: {
     flex: 1,
     marginRight: 6,
-},
+  },
 });
