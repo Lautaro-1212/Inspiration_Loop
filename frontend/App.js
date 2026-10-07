@@ -21,8 +21,24 @@ export default function App() {
       <NavigationContainer>
         <Tab.Navigator
           screenOptions={{
-            headerShown: false,
+            headerShown: true,
+
+            headerStyle: {
+              backgroundColor: '#043ca4',
+              height: 45,
+              borderBottomWidth: 0,
+              elevation: 0,
+            },
+
+            headerTintColor: '#ffffff',
+
             tabBarShowLabel: false,
+
+            headerTitleStyle: {
+              fontSize: 22,
+              fontWeight: "bold",
+            },
+
             tabBarStyle: {
               position: "absolute",
               bottom: 0,
@@ -34,6 +50,7 @@ export default function App() {
               elevation: 0,
               paddingBottom: 15,
             },
+
             tabBarItemStyle: {
               justifyContent: "center",
               alignItems: "center",

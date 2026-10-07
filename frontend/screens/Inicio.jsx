@@ -300,7 +300,7 @@ export default function HomeScreen() {
       color: '#888',
     },
     cardTitle: {
-      fontSize: 15,
+      fontSize: 30,
       fontWeight: '400',
       color: '#000000',
       marginTop: 6,
@@ -322,7 +322,7 @@ export default function HomeScreen() {
       color: '#888',
     },
     cardTitle: {
-      fontSize: 15,
+      fontSize: 20,
       fontWeight: '400',
       color: '#ffffff',
       marginTop: 6,
@@ -332,7 +332,7 @@ export default function HomeScreen() {
     // ESTILOS PARA EL MODAL CON INFORMACIÓN DETALLADA
     modalBackground: {
       flex: 1,
-      backgroundColor: '#FFFFFF', // Fondo blanco
+      backgroundColor: '#ffffff', // Fondo blanco
     },
     modalScrollContent: {
       alignItems: 'center',
