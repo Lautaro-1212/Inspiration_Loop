@@ -26,28 +26,34 @@
 
   return (
     <View style={styles.cardWrapper}>
-      <TouchableOpacity 
-        activeOpacity={0.7} 
-        onPress={() => onPress(item)} 
-        style={[styles.cardContainer,  { height: cardHeight }]}
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={() => onPress(item)}
+        style={[styles.cardContainer, { height: cardHeight }]}
       >
         {imageUri ? (
-          <Image 
-            source={typeof imageUri === 'string' ? { uri: imageUri } : imageUri} 
-            style={styles.cardImage} 
+          <Image
+            source={
+              typeof imageUri === 'string'
+                ? { uri: imageUri }
+                : imageUri
+            }
+            style={styles.cardImage}
             resizeMode="contain"
           />
         ) : (
           <View style={styles.noImageContainer}>
-            <Text style={styles.noImageText}>Sin Imagen</Text>  
+            <Text style={styles.noImageText}>Sin imagen</Text>
           </View>
         )}
+
+        {/* Título superpuesto a la imagen */}
+        <View style={styles.cardTitleOverlay}>
+          <Text style={styles.cardTitle} numberOfLines={2}>
+            {item.name || item.nombre || `Imagen ${index + 1}`}
+          </Text>
+        </View>
       </TouchableOpacity>
-      
-      {/* Título debajo de la tarjeta */}
-      <Text style={styles.cardTitle} numberOfLines={1}>
-        {item.name || item.nombre || `Imagen ${index + 1}`}
-      </Text>
     </View>
   );
 }
@@ -277,19 +283,36 @@ export default function HomeScreen() {
       fontWeight: '500',
       textAlign: 'center',
     },
+    
     cardWrapper: {
-      marginTop:20,
       width: '100%',
+      marginBottom: 20,
     },
+
     cardContainer: {
       width: '100%',
       borderRadius: 16,
       overflow: 'hidden',
       backgroundColor: '#151515',
+      position: 'relative',
     },
+
     cardImage: {
       width: '100%',
       height: '100%',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+    },
+
+    cardTitleOverlay: {
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      paddingHorizontal: 10,
+      paddingVertical: 12,
+      backgroundColor: 'rgba(0, 0, 0, 0.58)',
     },
     noImageContainer: {
       flex: 1,
@@ -301,13 +324,9 @@ export default function HomeScreen() {
       color: '#888',
     },
     cardTitle: {
-      fontSize: 30,
-      fontWeight: '400',
-      color: '#ffffff',
-      marginTop: 6,
-      backgroundColor: '#FFF',
-      borderRadius: 16,
-      overflow: 'hidden',
+      color: '#FFFFFF',
+      fontSize: 17,
+      fontWeight: '500',
     },
     cardImage: {
       width: '100%',
