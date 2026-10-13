@@ -35,11 +35,11 @@
           <Image 
             source={typeof imageUri === 'string' ? { uri: imageUri } : imageUri} 
             style={styles.cardImage} 
-            resizeMode="cover"
+            resizeMode="contain"
           />
         ) : (
           <View style={styles.noImageContainer}>
-            <Text style={styles.noImageText}>Sin Imagen</Text>
+            <Text style={styles.noImageText}>Sin Imagen</Text>  
           </View>
         )}
       </TouchableOpacity>
@@ -285,6 +285,7 @@ export default function HomeScreen() {
       width: '100%',
       borderRadius: 16,
       overflow: 'hidden',
+      backgroundColor: '#151515',
     },
     cardImage: {
       width: '100%',
