@@ -88,7 +88,7 @@ export default function CrearScreen() {
         if (!nombre.trim()) {
             Alert.alert(
                 'Falta el nombre',
-                'Por favor escribe un nombre para la imagen.'
+                'Por favor scribe un nombre para la imagen.'
             );
             return;
         }
@@ -205,7 +205,7 @@ export default function CrearScreen() {
                     marginLeft: '5%', 
                     borderRadius: 15, 
                     borderWidth: 1, 
-                    borderColor: '#000', 
+                    borderColor: '#043ca4', 
                     overflow: 'hidden', 
                     justifyContent: 'center', 
                     alignItems: 'center' 
@@ -257,7 +257,7 @@ export default function CrearScreen() {
             <Text style={{ fontSize: 25, marginLeft: '5%', marginTop: '2%', marginBottom: '1%' }}>Nombre</Text>
             <TextInput 
                 style={{ fontSize: 15, backgroundColor: '#ffff', borderWidth: 1, marginLeft: '5%', color: '#000000', width: '60%', height: '5%', borderRadius: 5, paddingHorizontal: 10 }} 
-                placeholder="nombre de la imagen..." 
+                placeholder="Ingrese un nombre para imagen..." 
                 value={nombre}
                 onChangeText={setNombre}
             />
@@ -265,7 +265,7 @@ export default function CrearScreen() {
             <Text style={{ fontSize: 25, marginLeft: '5%', marginTop: '2%', marginBottom: '1%' }}>Categoria</Text>
             <TextInput 
                 style={{ fontSize: 15, backgroundColor: '#ffff', borderWidth: 1, marginLeft: '5%', color: '#000000', width: '60%', height: '5%', borderRadius: 5, paddingHorizontal: 10 }} 
-                placeholder="ingrese la categoria..." 
+                placeholder="Ingrese la categoria..." 
                 value={categoriaActual}
                 onChangeText={setCategoriaActual}
                 onSubmitEditing={agregarCategoria} 
@@ -287,8 +287,8 @@ export default function CrearScreen() {
             
             <Text style={{ fontSize: 25, marginLeft: '5%', marginTop: '2%', marginBottom: '1%' }}>Descripción</Text>
             <TextInput 
-                style={{ fontSize: 15, backgroundColor: '#ffff', borderWidth: 1, marginLeft: '5%', color: '#000000', width: '75%', height: '8%',marginBottom: '20%' , borderRadius: 5, padding: 10, textAlignVertical: 'top' }} 
-                placeholder="escriba una descripcion"
+                style={{ fontSize: 15, backgroundColor: '#ffff', borderWidth: 1, marginLeft: '5%', color: '#000000', width: '75%', height: '8%',marginBottom: '20%', borderRadius: 5, padding: 10, textAlignVertical: 'top' }} 
+                placeholder="Escriba una descripción..."
                 multiline={true}
                 value={descripcion}
                 onChangeText={setDescripcion}

@@ -285,7 +285,7 @@ export default function ProfileScreen() {
             <View style={styles.emptyContainer}>
 
               <Text style={styles.emptyText}>
-                No hay imágenes en el perfil.
+                Aún no tienes imágenes.
               </Text>
 
             </View>
