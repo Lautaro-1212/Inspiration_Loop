@@ -249,7 +249,7 @@ export default function HomeScreen() {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#000',
+      backgroundColor: '#000000',
     },
     listPadding: {
       paddingHorizontal: 16,
@@ -302,7 +302,7 @@ export default function HomeScreen() {
     cardTitle: {
       fontSize: 30,
       fontWeight: '400',
-      color: '#000000',
+      color: '#ffffff',
       marginTop: 6,
       backgroundColor: '#FFF',
       borderRadius: 16,

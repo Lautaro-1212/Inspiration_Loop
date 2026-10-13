@@ -237,8 +237,8 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#A3A3A3', // Fondo gris idéntico al diseño
-    paddingTop: 50,
+    backgroundColor: '#000000', // Fondo gris idéntico al diseño
+    paddingTop: 20,
   },
   searchBarContainer: {
     flexDirection: 'row',
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 12,
     height: 44,
-    marginBottom: 16,
+    marginBottom: 8,
   },
   searchIcon: {
     fontSize: 16,
@@ -257,7 +257,6 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 15,
-    color: '#000',
     fontWeight: '500',
   },
   listPadding: {

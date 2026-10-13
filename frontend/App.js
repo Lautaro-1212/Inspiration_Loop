@@ -25,7 +25,7 @@ export default function App() {
 
             headerStyle: {
               backgroundColor: '#043ca4',
-              height: 45,
+              height: 70,
               borderBottomWidth: 0,
               elevation: 0,
             },

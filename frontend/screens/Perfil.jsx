@@ -449,7 +449,7 @@ const styles = StyleSheet.create({
 
     flex: 1,
 
-    backgroundColor: '#ADADAD',
+    backgroundColor: '#000000',
 
   },
 
@@ -463,7 +463,7 @@ const styles = StyleSheet.create({
 
   loadingText: {
 
-    color: '#000',
+    color: '#ffffff',
 
     marginTop: 10,
 
@@ -495,11 +495,11 @@ const styles = StyleSheet.create({
 
     borderWidth: 4,
 
-    borderColor: '#ADADAD',
+    borderColor: '#000000',
 
     overflow: 'hidden',
 
-    backgroundColor: '#FFF',
+    backgroundColor: '#000000',
 
     justifyContent: 'center',
 
@@ -521,7 +521,7 @@ const styles = StyleSheet.create({
 
     fontWeight: 'bold',
 
-    color: '#000',
+    color: '#ffffff',
 
     marginLeft: 20,
 
@@ -539,7 +539,7 @@ const styles = StyleSheet.create({
 
     justifyContent: 'space-between',
 
-    backgroundColor: '#959CA8',
+    backgroundColor: '#043ca4',
 
     padding: INNER_PADDING,
 

@@ -189,7 +189,7 @@ export default function CrearScreen() {
     };
 
     return (
-        <View style={{ width: '100%', height: '100%', backgroundColor: '#969aa8' }}>
+        <View style={{ width: '100%', height: '100%', backgroundColor: '#000000' }}>
             
             <Text style={{ fontSize: 25, marginLeft: '5%', marginTop: '3%', marginBottom: '2%' }}>Imagen:</Text>
             
@@ -300,13 +300,13 @@ export default function CrearScreen() {
                 left: '5%',
                 right: '5%',
                 height: '8%',
-                backgroundColor: '#737785',
+                backgroundColor: '#043ca4',
                 borderRadius: 12,
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-around',
                 borderWidth: 1,
-                borderColor: '#4a4d56'
+                borderColor: '#043ca4'
             }}>
                 <TouchableOpacity style={{ alignItems: 'center' }} onPress={tomarFoto}>
                     <Image source={require('../assets/camara.png')} style={{ width: 55, height: 25 }} />
@@ -325,7 +325,7 @@ export default function CrearScreen() {
                 onPress={guardarRegistro}
                 style={{
                     position: 'absolute',
-                    bottom: -10,
+                    bottom: -1,
                     left: '5%',
                     right: '5%',
                     backgroundColor: '#28a745',
