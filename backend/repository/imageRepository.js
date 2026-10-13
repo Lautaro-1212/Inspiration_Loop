@@ -1,36 +1,61 @@
 import db from "../config/database.js";
 
-export function findAll(){
-    const resultado =  db.prepare(`
-        SELECT *
-        FROM image
-    `).all();
+// Consulta común: imagen + categorías
+const imageWithCategories = `
+    SELECT
+        image.*,
+        (
+            SELECT json_group_array(category.name)
+            FROM image_category
+            JOIN category
+                ON category.id = image_category.category_id
+            WHERE image_category.image_id = image.id
+        ) AS categories
+    FROM image
+`;
 
-    console.log("Se obtuvieron todas las imagenes")
+// Convierte las categorías de JSON string a array de JavaScript
+function parseCategories(image) {
+    if (!image) return image;
 
-    return resultado;
-}   
-
-export function findById(id){
-    const resultado = db.prepare(`
-        SELECT *
-        FROM image
-        WHERE id = ?
-    `).get(id);
-
-    console.log("La imagen con id " + id)
-
-    return resultado;
+    return {
+        ...image,
+        categories: JSON.parse(image.categories ?? "[]")
+    };
 }
 
-export function randomImages(){
+export function findAll() {
+    const resultado = db.prepare(imageWithCategories).all();
+
+    console.log("Se obtuvieron todas las imágenes");
+
+    return resultado.map(parseCategories);
+}
+
+export function findById(id) {
     const resultado = db.prepare(`
-        SELECT *
-        FROM image
+        ${imageWithCategories}
+        WHERE image.id = ?
+    `).get(id);
+
+    console.log("La imagen con id " + id);
+
+    return parseCategories(resultado);
+}
+
+export function randomImages() {
+    const resultado = db.prepare(`
+        ${imageWithCategories}
         ORDER BY RANDOM()
     `).all();
 
-    return resultado;
+    console.log("Resultado SQL:", resultado);
+
+    const imagenes = resultado.map(parseCategories);
+
+    console.log("Resultado final:", imagenes);
+
+    return imagenes;
 }
 
 export function create(image, categoryNames = []) {

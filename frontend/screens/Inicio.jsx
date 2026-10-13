@@ -20,7 +20,7 @@
   const PORT = process.env.EXPO_PUBLIC_API_PORT;
 
   // --- COMPONENTE RENDER TARJETA ---
-  function RenderTarjeta({ item, index, onPress }) {
+  function RenderTarjeta({ item, index, onPress, categorias }) {
   const imageUri = item.imageUrl || item.image || item.uri;
   const cardHeight = index % 2 === 0 ? 180 : 280;
 
@@ -76,6 +76,15 @@ export default function HomeScreen() {
       console.log("Status:", response.status);
 
       const data = await response.json();
+
+      console.log(
+        "Categorías recibidas:",
+        data.mensaje?.map(item => ({
+          id: item.id,
+          name: item.name,
+          categories: item.categories
+        }))
+      );
 
       console.log("Respuesta:", data);
 
@@ -233,7 +242,9 @@ export default function HomeScreen() {
                     <View style={styles.categoriesWrapper}>
                       {listaCategorias.map((cat, idx) => (
                         <View key={idx} style={styles.categoryBadge}>
-                          <Text style={styles.categoryBadgeText}>{cat}</Text>
+                          <Text style={styles.categoryBadgeText}>
+                            {typeof cat === 'string' ? cat : cat.name}
+                          </Text>
                         </View>
                       ))}
                     </View>
