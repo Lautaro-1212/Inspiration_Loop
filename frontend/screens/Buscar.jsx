@@ -24,7 +24,7 @@ const tarjetasPlaceholders = [
   {
     id: '1',
     name: 'Fondos de pantalla',
-    image: require('../assets/fondospantalla.jpg'),
+    image: require('../assets/fondospantalla.webp'),
     description: 'Colección de fondos de pantalla HD y 4K.',
     categories: ['Wallpapers', 'Diseño']
   },
