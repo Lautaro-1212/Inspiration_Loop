@@ -485,7 +485,7 @@ const styles = StyleSheet.create({
   height: CARD_WIDTH,
   borderRadius: 16,
   overflow: 'hidden',
-  backgroundColor: '#151515',
+  backgroundColor: '#000000',
   marginTop: 6,
   },
   cardImageBackground: {
@@ -508,7 +508,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#151515',
+    backgroundColor: '#000000',
     padding: 10,
   },
   placeholderText: {
@@ -584,7 +584,7 @@ const styles = StyleSheet.create({
   // Modal de información
   modalBackground: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#000000',
   },
   modalScrollContent: {
     alignItems: 'center',
@@ -599,11 +599,11 @@ const styles = StyleSheet.create({
     zIndex: 10,
     paddingHorizontal: 14,
     paddingVertical: 10,
-    backgroundColor: 'rgba(0, 0, 0, 0.08)',
+    backgroundColor: '#043ca4',
     borderRadius: 20,
   },
   closeButtonText: {
-    color: '#000000',
+    color: '#ffffff',
     fontWeight: 'bold',
     fontSize: 16,
   },
@@ -612,7 +612,8 @@ const styles = StyleSheet.create({
     height: 350,
     borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: '#151515',
+    backgroundColor: '#000000',
+    marginTop:30
   },
   modalInfoContainer: {
     width: width * 0.85,
@@ -620,7 +621,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   modalTitle: {
-    color: '#000000',
+    color: '#ffffff',
     fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 10,
@@ -646,7 +647,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   modalDescription: {
-    color: '#333333',
+    color: '#ffffff',
     fontSize: 15,
     lineHeight: 22,
   },

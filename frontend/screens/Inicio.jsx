@@ -226,7 +226,7 @@ export default function HomeScreen() {
                   <Image 
                     source={{ uri: imageUriModal }} 
                     style={styles.fullImage} 
-                    resizeMode="contain"
+                    resizeMode='center'
                   />
                 )}
 
@@ -363,7 +363,7 @@ export default function HomeScreen() {
     // ESTILOS PARA EL MODAL CON INFORMACIÓN DETALLADA
     modalBackground: {
       flex: 1,
-      backgroundColor: '#ffffff', // Fondo blanco
+      backgroundColor: '#000000', // Fondo blanco
     },
     modalScrollContent: {
       alignItems: 'center',
@@ -378,11 +378,11 @@ export default function HomeScreen() {
       right: 20,
       zIndex: 10,
       padding: 10,
-      backgroundColor: 'rgba(0, 0, 0, 0.1)', // Fondo gris traslúcido
+      backgroundColor: '#043ca4', // Fondo gris traslúcido
       borderRadius: 20,
     },
     closeButtonText: {
-      color: '#000000', // Texto negro
+      color: '#ffffff',
       fontWeight: 'bold',
       fontSize: 18,
     },
@@ -393,11 +393,11 @@ export default function HomeScreen() {
     },
     modalInfoContainer: {
       width: width * 0.85,
-      marginTop: 20,
+      //marginTop: 20,
       alignItems: 'flex-start',
     },
     modalTitle: {
-      color: '#000000', // Texto negro
+      color: '#ffffff', 
       fontSize: 22,
       fontWeight: 'bold',
       marginBottom: 10,
@@ -408,7 +408,7 @@ export default function HomeScreen() {
       marginBottom: 12,
     },
     categoryBadge: {
-      backgroundColor: '#E0E0E0', // Fondo gris claro
+      backgroundColor: '#E0E0E0',
       paddingHorizontal: 10,
       paddingVertical: 4,
       borderRadius: 6,
@@ -418,19 +418,19 @@ export default function HomeScreen() {
       borderColor: '#CCC',
     },
     categoryBadgeText: {
-      color: '#000000', // Texto negro
+      color: '#000000',
       fontSize: 13,
       fontWeight: '600',
     },
     modalDescription: {
-      color: '#333333', // Texto gris oscuro/negro
+      color: '#ffffff',
       fontSize: 15,
       lineHeight: 22,
     },
     columnaDerecha: {
       flex: 1,
       marginLeft: 6,
-      marginTop: 24, // <-- Desfase para bajar levemente la segunda columna
+      marginTop: 24,
     },
     columnaIzquierda: {
     flex: 1,
