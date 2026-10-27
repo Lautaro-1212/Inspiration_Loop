@@ -54,7 +54,7 @@ https://try.cloudflare.com/#install
 Inspiration_Loop/backend/node app.js
 ```
 
-3) En otra terminal abrir el tunel con el cloudflar:
+3) En otra terminal abrir el tunel con el cloudflare:
 
 ```bash
 cloudflared tunnel --url http://localhost:3000 2>&1 | grep --line-buffered -o 'https://[^ ]*trycloudflare.com'

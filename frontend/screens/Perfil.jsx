@@ -56,24 +56,18 @@ function RenderTarjeta({ item, index, onPress }) {
   );
 }
 
-function ProfileHeader({ nombreUsuario = "Nombre del usuario" }) {
-
+function ProfileHeader({ nombreUsuario, avatarUri }) {
   return (
     <View style={styles.headerContainer}>
-
       <View style={styles.avatarContainer}>
-
         <Image
-          source={require('../assets/Perfil2.png')}
+          source={avatarUri ? { uri: avatarUri } : require('../assets/Perfil2.png')}
           style={styles.avatarImage}
         />
-
       </View>
-
       <Text style={styles.userName}>
-        {nombreUsuario}
+        {nombreUsuario || "Usuario"}
       </Text>
-
     </View>
   );
 }
