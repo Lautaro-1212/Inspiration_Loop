@@ -2,6 +2,7 @@ import { startBDD } from './database/schema.js';
 import express from 'express'
 import cors from "cors";
 import imageRouter from "./controller/imageController.js"
+import userRouter from "./controller/userController.js"
 import path from 'path'
 import { dirname } from './config/fileStorage.js';
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(dirname, '..', 'uploads')));
 
 app.use("/api/images", imageRouter)
+app.use("/api/user", userRouter)
 
 function startHTTP(){
     app.listen(PORT, '0.0.0.0', () => {
