@@ -1,5 +1,5 @@
 import express from "express"
-import { getAllUsers, getUserById, getUserByEmail, createNewUser, updateUser, deleteUserById } from "../service/userService.js"
+import { getAllUsers, getUserById, getUserByEmail, createNewUser, updateUser, deleteUserById, verifyUser } from "../service/userService.js"
 
 const router = express.Router()
 
@@ -18,9 +18,28 @@ router.get("/:id", (req,res) => {
     res.send({ data });
 });
 
-router.post("/", (req, res) => {
+router.post("/register", (req, res) => {
     let data = createNewUser(req.body);
     res.send({ data });
+});
+
+router.post("/login", (req, res) => {
+    const data = verifyUser(req.body ?? {});
+
+    if (!data) {
+        return res.status(401).json({
+            error: "Email o contraseña incorrectos"
+        });
+    }
+
+    return res.status(200).json({
+        mensaje: "Inicio de sesión exitoso",
+        user: {
+            id: data.id,
+            name: data.name,
+            email: data.email
+        }
+    });
 });
 
 router.patch("/:id", (req, res) => {

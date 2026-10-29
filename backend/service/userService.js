@@ -22,6 +22,22 @@ export function createNewUser(bodyData){
     return create(userData)
 }
 
+export function verifyUser(bodyData) {
+    const { email, password } = bodyData;
+
+    const user = getUserByEmail(email);
+
+    if (!user) {
+        return null;
+    }
+
+    if (user.password === password) {
+        return user;
+    }
+
+    return null;
+}
+
 export function updateUser(id, bodyData) {
     const userData = {
         name: bodyData.name,
