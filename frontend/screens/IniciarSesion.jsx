@@ -55,8 +55,19 @@ export default function LoginScreen({ onLoginSuccess }) {
       Alert.alert('¡Éxito!', 'Cuenta creada con éxito');
     }
 
-    // Cuando el backend devuelva los datos del usuario,
-    // podés pasarlos a onLoginSuccess aquí.
+    const usuario = data.user;
+
+    if (!usuario) {
+      Alert.alert('Error', 'El servidor no devolvió los datos del usuario.');
+      return;
+    }
+
+    user.id = usuario.id;
+    user.name = usuario.name;
+
+    console.log(user.id, user.name)
+
+    onLoginSuccess(usuario);
 
   } catch (error) {
     console.error('Error en la petición:', error);

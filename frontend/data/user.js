@@ -1,5 +1,4 @@
 export let user = {
-    name: "usuario",
-    gmail: "ejemplo@gmail.com",
-    password:"contrania"
+    id: null,
+    name: null,
 }
