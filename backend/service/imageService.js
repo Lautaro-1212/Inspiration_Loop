@@ -19,6 +19,7 @@ export function postImage(bodyData, fileData) {
     const dimensions = imageSize(buffer);
 
     const imageData = {
+        user_id: Number(bodyData.user_id),
         name: bodyData.name || fileData.originalname,
         path: fileData.path,
         width: dimensions.width,
