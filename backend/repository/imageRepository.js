@@ -4,6 +4,7 @@ import db from "../config/database.js";
 const imageWithCategories = `
     SELECT
         image.*,
+        user.name AS user_name,
         (
             SELECT json_group_array(category.name)
             FROM image_category
@@ -12,6 +13,8 @@ const imageWithCategories = `
             WHERE image_category.image_id = image.id
         ) AS categories
     FROM image
+    JOIN user
+        ON user.id = image.user_id
 `;
 
 // Convierte las categorías de JSON string a array de JavaScript
@@ -63,9 +66,12 @@ export function create(image, categoryNames = []) {
 
         // 1. Insertar la imagen
         const result = db.prepare(`
-            INSERT INTO image (name, path, width, height, description)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO image (
+                user_id, name, path, width, height, description
+            )
+            VALUES (?, ?, ?, ?, ?, ?)
         `).run(
+            imageData.user_id,
             imageData.name,
             imageData.path,
             imageData.width,
