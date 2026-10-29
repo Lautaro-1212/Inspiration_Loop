@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import { imageSize } from "image-size";
-import { findAll, findById, randomImages, create, deleteById } from "../repository/imageRepository.js";
+import { findAll, findById, findByUserId, randomImages, create, deleteById } from "../repository/imageRepository.js";
 
 export function getImages(){
     return findAll();
@@ -12,6 +12,10 @@ export function getImagesXId(id) {
 
 export function getRandomImages(){
     return randomImages();
+}
+
+export function getUserImages(user_id) {
+    return findByUserId(user_id);
 }
 
 export function postImage(bodyData, fileData) {

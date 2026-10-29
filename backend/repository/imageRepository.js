@@ -46,6 +46,15 @@ export function findById(id) {
     return parseCategories(resultado);
 }
 
+export function findByUserId(user_id) {
+    const resultado = db.prepare(`
+        ${imageWithCategories}
+        WHERE image.user_id = ?
+    `).all(user_id);
+
+    return resultado.map(parseCategories);
+}
+
 export function randomImages() {
     const resultado = db.prepare(`
         ${imageWithCategories}
