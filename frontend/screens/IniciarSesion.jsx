@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { user } from '../data/user.js'
 
 const IP = process.env.EXPO_PUBLIC_API_IP;
 
 export default function LoginScreen({ onLoginSuccess }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
   const [nombre, setNombre] = useState('');
 
   const handleSubmit = async () => {
@@ -27,6 +28,8 @@ export default function LoginScreen({ onLoginSuccess }) {
       };
 
       Alert.alert('¡Éxito!', isLogin ? 'Bienvenido' : 'Cuenta creada con éxito');
+
+      user.name = nombre;
       
       // Llamamos a la función que cambia el estado global y pasa el usuario
       onLoginSuccess(usuarioSimulado);

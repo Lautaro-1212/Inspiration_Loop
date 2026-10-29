@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { user } from '../data/user.js'
 
 import {
   View,
@@ -66,7 +67,7 @@ function ProfileHeader({ nombreUsuario, avatarUri }) {
         />
       </View>
       <Text style={styles.userName}>
-        {nombreUsuario || "Usuario"}
+        {user.name}
       </Text>
     </View>
   );
