@@ -5,32 +5,32 @@ const router = express.Router()
 
 router.get("/", (req, res) => {
     let data = getAllUsers();
-    res.send({ mensaje: data });
+    res.send({ data });
 });
 
 router.get("/email/:email", (req, res) => {
     let data = getUserByEmail(req.params.email)
-    res.send({ mensaje: data })
+    res.send({ data })
 })
     
 router.get("/:id", (req,res) => {
     let data = getUserById(req.params.id);
-    res.send({ mensaje: data });
+    res.send({ data });
 });
 
 router.post("/", (req, res) => {
     let data = createNewUser(req.body);
-    res.send({ mensaje: data });
+    res.send({ data });
 });
 
 router.patch("/:id", (req, res) => {
     let data = updateUser(req.params.id, req.body)
-    res.send({ mensaje: data})
-})
+    res.send({ data })
+}) 
 
 router.delete("/:id", (req, res) => {
     let data = deleteUserById(req.params.id);
-    res.send({ mensaje: data });
+    res.send({ data });
 });
 
 export default router;

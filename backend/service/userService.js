@@ -1,4 +1,4 @@
-import { findAll, findById, findByEmail, create, update, deleteById } from "../repository/userRepository";
+import { findAll, findById, findByEmail, create, update, deleteById } from "../repository/userRepository.js";
 
 export function getAllUsers(){
     return findAll();
