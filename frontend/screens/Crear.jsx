@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Image, TouchableOpacity, Alert, Modal, Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { user } from '../data/user.js'
 const IP = process.env.EXPO_PUBLIC_API_IP;
 const PORT = process.env.EXPO_PUBLIC_API_PORT;
 
@@ -111,6 +112,8 @@ export default function CrearScreen() {
 
         try {
             const formData = new FormData();
+
+            formData.append('user_id', user.id);
 
             formData.append('name', nombre.trim());
 
