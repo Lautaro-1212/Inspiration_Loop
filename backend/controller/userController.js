@@ -19,8 +19,9 @@ router.get("/:id", (req,res) => {
 });
 
 router.post("/register", (req, res) => {
-    let data = createNewUser(req.body);
-    res.send({ data });
+    const data = createNewUser(req.body);
+
+    return res.status(201).json({ user: data });
 });
 
 router.post("/login", (req, res) => {

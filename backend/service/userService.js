@@ -19,7 +19,13 @@ export function createNewUser(bodyData){
         password: bodyData.password
     }
 
-    return create(userData)
+    const result = create(userData)
+
+    return {
+        id: Number(result.lastInsertRowid),
+        name: userData.name,
+        email: userData.email
+    };
 }
 
 export function verifyUser(bodyData) {
