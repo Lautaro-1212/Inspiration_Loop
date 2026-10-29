@@ -237,6 +237,10 @@ export default function HomeScreen() {
                     {tarjetaSeleccionada.name || tarjetaSeleccionada.nombre || 'Sin título'}
                   </Text>
 
+                  <Text style={styles.modalUserImage}>
+                    {"de " + tarjetaSeleccionada.user_name || tarjetaSeleccionada.nombre || 'Sin título'}
+                  </Text>
+
                   {/* Lista de Categorías */}
                   {listaCategorias.length > 0 && (
                     <View style={styles.categoriesWrapper}>
@@ -390,6 +394,7 @@ export default function HomeScreen() {
       width: width * 0.85,
       height: 350,
       borderRadius: 12,
+      marginTop: 50
     },
     modalInfoContainer: {
       width: width * 0.85,
@@ -401,6 +406,7 @@ export default function HomeScreen() {
       fontSize: 22,
       fontWeight: 'bold',
       marginBottom: 10,
+      marginTop:10
     },
     categoriesWrapper: {
       flexDirection: 'row',
@@ -426,6 +432,11 @@ export default function HomeScreen() {
       color: '#ffffff',
       fontSize: 15,
       lineHeight: 22,
+    },
+    modalUserImage: {
+      color: '#ffffff',
+      fontSize: 13,
+      marginBottom: 10
     },
     columnaDerecha: {
       flex: 1,
