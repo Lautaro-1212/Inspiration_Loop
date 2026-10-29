@@ -2,6 +2,7 @@
   "name": "inspiration-loop",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "commonjs",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",

@@ -11,33 +11,61 @@ export default function LoginScreen({ onLoginSuccess }) {
   const [nombre, setNombre] = useState('');
 
   const handleSubmit = async () => {
-    if (!email || !password || (!isLogin && !nombre)) {
-      Alert.alert('Error', 'Por favor completa todos los campos.');
+  if (!email || !password || (!isLogin && !nombre)) {
+    Alert.alert('Error', 'Por favor completa todos los campos.');
+    return;
+  }
+
+  try {
+    const endpoint = isLogin
+      ? '/api/user/login'
+      : '/api/user/register';
+
+    const response = await fetch(
+      `http://localhost:3000${endpoint}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: nombre,
+          email,
+          password,
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    console.log('Estado HTTP:', response.status);
+    console.log('Respuesta del servidor:', data);
+
+    if (!response.ok) {
+      Alert.alert(
+        'Error',
+        data.error ?? 'No se pudo completar la operación.'
+      );
       return;
     }
 
-    try {
-      // Aquí conectas con tu API real de Login o Registro
-      // const response = await fetch(`https://${IP}/api/auth/${isLogin ? 'login' : 'register'}`, { ... });
-      
-      // Simulación de respuesta exitosa del backend con datos del usuario:
-      const usuarioSimulado = {
-        nombre: isLogin ? "Usuario de Prueba" : nombre,
-        email: email,
-        avatar: 'https://via.placeholder.com/150' // O la URL de su foto de perfil si la hay
-      };
-
-      Alert.alert('¡Éxito!', isLogin ? 'Bienvenido' : 'Cuenta creada con éxito');
-
-      user.name = nombre;
-      
-      // Llamamos a la función que cambia el estado global y pasa el usuario
-      onLoginSuccess(usuarioSimulado);
-
-    } catch (error) {
-      Alert.alert('Error', 'No se pudo conectar con el servidor.');
+    if (isLogin) {
+      Alert.alert('¡Éxito!', 'Bienvenido');
+    } else {
+      Alert.alert('¡Éxito!', 'Cuenta creada con éxito');
     }
-  };
+
+    // Cuando el backend devuelva los datos del usuario,
+    // podés pasarlos a onLoginSuccess aquí.
+
+  } catch (error) {
+    console.error('Error en la petición:', error);
+    Alert.alert(
+      'Error',
+      'No se pudo conectar con el servidor.'
+    );
+  }
+};
 
   return (
     <View style={styles.container}>
