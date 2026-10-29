@@ -402,6 +402,10 @@ export default function HomeScreen() {
                   {tarjetaSeleccionada.name}
                 </Text>
 
+                <Text style={styles.modalUserImage}>
+                  {"de " + tarjetaSeleccionada.user_name}
+                </Text>
+
                 {tarjetaSeleccionada.categories?.length > 0 && (
                   <View style={styles.categoriesWrapper}>
                     {tarjetaSeleccionada.categories.map((cat, idx) => (
@@ -625,6 +629,11 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 10,
+  },
+  modalUserImage: {
+    color: '#ffffff',
+    fontSize: 13,
+    marginBottom: 13
   },
   categoriesWrapper: {
     flexDirection: 'row',
