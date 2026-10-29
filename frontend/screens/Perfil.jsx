@@ -95,13 +95,19 @@ export default function ProfileScreen() {
 
     try {
 
-      const API_URL = `https://${IP}/api/images/`;
+      const API_URL = `https://${IP}/api/images/user/${user.id}`;
 
       const response = await fetch(API_URL);
 
       const data = await response.json();
 
-      if (response.ok && data.mensaje) {
+      console.log("URL consultada:", API_URL);
+      console.log("Estado HTTP:", response.status);
+      console.log("Respuesta completa:", data);
+      console.log("Tipo de mensaje:", typeof data.mensaje);
+      console.log("¿Mensaje es array?:", Array.isArray(data.mensaje));
+
+      if (response.ok && Array.isArray(data.mensaje)) {
 
         const tarjetasFormateadas = data.mensaje.map((item) => {
 
@@ -750,4 +756,3 @@ const styles = StyleSheet.create({
   },
 
 });
-
