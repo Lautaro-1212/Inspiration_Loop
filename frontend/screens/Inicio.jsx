@@ -382,7 +382,7 @@ export default function HomeScreen() {
       right: 20,
       zIndex: 10,
       padding: 10,
-      backgroundColor: '#043ca4', // Fondo gris traslúcido
+      backgroundColor: '#043ca4',
       borderRadius: 20,
     },
     closeButtonText: {

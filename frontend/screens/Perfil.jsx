@@ -372,6 +372,20 @@ export default function ProfileScreen() {
 
                 </Text>
 
+                {/* usuario */}
+
+                <Text
+                  style={styles.modalUserImage}
+                >
+
+                  {
+                    "de " + tarjetaSeleccionada.user_name ||
+                    tarjetaSeleccionada.nombre ||
+                    'Sin título'
+                  }
+
+                </Text>
+
 
                 {/* Categorías */}
 
@@ -601,7 +615,7 @@ const styles = StyleSheet.create({
 
     flex: 1,
 
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#000000',
 
   },
 
@@ -611,7 +625,7 @@ const styles = StyleSheet.create({
 
     justifyContent: 'center',
 
-    paddingVertical: 40,
+    paddingVertical: 0,
 
     paddingHorizontal: 20,
 
@@ -631,7 +645,7 @@ const styles = StyleSheet.create({
 
     padding: 10,
 
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    backgroundColor: '#043ca4',
 
     borderRadius: 20,
 
@@ -639,7 +653,7 @@ const styles = StyleSheet.create({
 
   closeButtonText: {
 
-    color: '#000000',
+    color: '#ffffff',
 
     fontWeight: 'bold',
 
@@ -669,7 +683,7 @@ const styles = StyleSheet.create({
 
   modalTitle: {
 
-    color: '#000000',
+    color: '#ffffff',
 
     fontSize: 22,
 
@@ -677,6 +691,12 @@ const styles = StyleSheet.create({
 
     marginBottom: 10,
 
+  },
+
+  modalUserImage: {
+    color: '#ffffff',
+    fontSize: 15,
+    marginBottom: 13
   },
 
   categoriesWrapper: {
@@ -721,7 +741,7 @@ const styles = StyleSheet.create({
 
   modalDescription: {
 
-    color: '#333333',
+    color: '#ffffff',
 
     fontSize: 15,
 
